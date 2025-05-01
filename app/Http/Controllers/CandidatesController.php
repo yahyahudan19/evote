@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Candidate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CandidatesController extends Controller
 {
@@ -14,19 +16,20 @@ class CandidatesController extends Controller
         return view('apps.candidate', compact('canditates'));
     }
 
+
+
     public function store(Request $request)
     {
-        dd($request->all());
         // Validasi input
         $request->validate([
             'ketua_name'    => 'required|string|max:255',
             'wakil_name'    => 'required|string|max:255',
             'description'   => 'nullable|string|max:500',
-            'ketua_avatar'  => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'wakil_avatar'  => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'ketua_avatar'  => 'required|image|mimes:jpeg,png,jpg',
+            'wakil_avatar'  => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
-        // Cek duplikasi kombinasi paslon
+        // Cek duplikat paslon
         $exists = Candidate::where('ketua_name', $request->ketua_name)
                     ->where('wakil_name', $request->wakil_name)
                     ->exists();
@@ -40,19 +43,35 @@ class CandidatesController extends Controller
         // Dapatkan nomor urut berikutnya
         $nextNumber = (Candidate::max('candidate_number') ?? 0) + 1;
 
+        // Pastikan direktori ada
+        $ketuaDir = 'candidates/ketua';
+        $wakilDir = 'candidates/wakil';
+
+        if (!Storage::disk('public')->exists($ketuaDir)) {
+            Storage::disk('public')->makeDirectory($ketuaDir);
+        }
+
+        if (!Storage::disk('public')->exists($wakilDir)) {
+            Storage::disk('public')->makeDirectory($wakilDir);
+        }
+
         // Upload gambar ketua
-        $ketuaPath = $request->file('ketua_avatar')->storeAs(
-            'candidates/ketua',
-            strtolower(str_replace(' ', '-', $request->ketua_name)) . '_candidates-' . $nextNumber . '.' . $request->file('ketua_avatar')->getClientOriginalExtension(),
-            'public'
-        );
+        $ketuaFile = $request->file('ketua_avatar');
+        $ketuaFileName = Str::slug($request->ketua_name) . '_candidates-' . $nextNumber . '.' . $ketuaFile->getClientOriginalExtension();
+        $ketuaPath = $ketuaFile->storeAs($ketuaDir, $ketuaFileName, 'public');
+
+        if (!$ketuaPath || !Storage::disk('public')->exists($ketuaPath)) {
+            return redirect()->back()->withErrors(['ketua_avatar' => 'Upload foto ketua gagal.'])->withInput();
+        }
 
         // Upload gambar wakil
-        $wakilPath = $request->file('wakil_avatar')->storeAs(
-            'candidates/wakil',
-            strtolower(str_replace(' ', '-', $request->wakil_name)) . '_candidates-' . $nextNumber . '.' . $request->file('wakil_avatar')->getClientOriginalExtension(),
-            'public'
-        );
+        $wakilFile = $request->file('wakil_avatar');
+        $wakilFileName = Str::slug($request->wakil_name) . '_candidates-' . $nextNumber . '.' . $wakilFile->getClientOriginalExtension();
+        $wakilPath = $wakilFile->storeAs($wakilDir, $wakilFileName, 'public');
+
+        if (!$wakilPath || !Storage::disk('public')->exists($wakilPath)) {
+            return redirect()->back()->withErrors(['wakil_avatar' => 'Upload foto wakil gagal.'])->withInput();
+        }
 
         // Simpan ke database
         Candidate::create([
@@ -66,5 +85,6 @@ class CandidatesController extends Controller
 
         return redirect()->back()->with('success', 'Paslon berhasil ditambahkan.');
     }
+
 
 }
