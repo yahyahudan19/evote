@@ -166,7 +166,7 @@
                                                         <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ asset('templates/assets/media/avatars/300-1.jpg')}});"></div>
                                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                                                             <i class="ki-outline ki-pencil fs-7"></i>
-                                                            <input type="file" name="ketua_avatar" accept=".png, .jpg, .jpeg" />
+                                                            <input type="file" name="ketua_avatar" accept=".png, .jpg, .jpeg" required />
                                                             <input type="hidden" name="ketua_avatar_remove" />
                                                         </label>
                                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
@@ -194,7 +194,7 @@
                                                         <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ asset('templates/assets/media/avatars/300-3.jpg')}});"></div>
                                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
                                                             <i class="ki-outline ki-pencil fs-7"></i>
-                                                            <input type="file" name="wakil_avatar" accept=".png, .jpg, .jpeg" />
+                                                            <input type="file" name="wakil_avatar" accept=".png, .jpg, .jpeg" required/>
                                                             <input type="hidden" name="wakil_avatar_remove" />
                                                         </label>
                                                         <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">

@@ -16,7 +16,17 @@ class CandidatesController extends Controller
 
     public function store(Request $request)
     {
-        // Cek jika ada pasangan dengan nama sama (kombinasi)
+        dd($request->all());
+        // Validasi input
+        $request->validate([
+            'ketua_name'    => 'required|string|max:255',
+            'wakil_name'    => 'required|string|max:255',
+            'description'   => 'nullable|string|max:500',
+            'ketua_avatar'  => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'wakil_avatar'  => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // Cek duplikasi kombinasi paslon
         $exists = Candidate::where('ketua_name', $request->ketua_name)
                     ->where('wakil_name', $request->wakil_name)
                     ->exists();
@@ -27,25 +37,24 @@ class CandidatesController extends Controller
             ])->withInput();
         }
 
-        // Upload gambar dengan nama sesuai ketua_name atau wakil_name dan candidate_number
+        // Dapatkan nomor urut berikutnya
         $nextNumber = (Candidate::max('candidate_number') ?? 0) + 1;
 
-        $ketuaPath = $request->hasFile('ketua_avatar')
-            ? $request->file('ketua_avatar')->storeAs(
+        // Upload gambar ketua
+        $ketuaPath = $request->file('ketua_avatar')->storeAs(
             'candidates/ketua',
             strtolower(str_replace(' ', '-', $request->ketua_name)) . '_candidates-' . $nextNumber . '.' . $request->file('ketua_avatar')->getClientOriginalExtension(),
             'public'
-            )
-            : null;
+        );
 
-        $wakilPath = $request->hasFile('wakil_avatar')
-            ? $request->file('wakil_avatar')->storeAs(
+        // Upload gambar wakil
+        $wakilPath = $request->file('wakil_avatar')->storeAs(
             'candidates/wakil',
             strtolower(str_replace(' ', '-', $request->wakil_name)) . '_candidates-' . $nextNumber . '.' . $request->file('wakil_avatar')->getClientOriginalExtension(),
             'public'
-            )
-            : null;
+        );
 
+        // Simpan ke database
         Candidate::create([
             'candidate_number'   => $nextNumber,
             'ketua_name'         => $request->ketua_name,
@@ -57,4 +66,5 @@ class CandidatesController extends Controller
 
         return redirect()->back()->with('success', 'Paslon berhasil ditambahkan.');
     }
+
 }
