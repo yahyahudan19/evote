@@ -173,23 +173,19 @@
             
                     <div class="modal-body">
                         <div class="mb-5">
+                            <label class="required form-label">Full Name</label>
+                            <input type="text" class="form-control form-control-solid" placeholder="Name" name="name" id="name" required/>
+                        </div>
+                        <div class="mb-5">
                             <label class="required form-label">Email</label>
-                            <input type="text" class="form-control form-control-solid" placeholder="Example input" name="email" id="email" required/>
+                            <input type="email" class="form-control form-control-solid" placeholder="email@mail.com" name="email" id="email" required/>
                         </div>
+                        
                         <div class="mb-5">
-                            <label class="required form-label">ID University</label>
-                            <input type="text" class="form-control form-control-solid" placeholder="Example input" name="id_university" id="id_university" required/>
+                            <label class="required form-label">Phone Number</label>
+                            <input type="text" class="form-control form-control-solid" placeholder="08123456789" name="phone" id="phone" required/>
                         </div>
-                        <div class="mb-5">
-                            <label class="required form-label">Birth Date</label>
-
-                            <div class="input-group" id="kt_td_picker_date_only" data-td-target-input="nearest" data-td-target-toggle="nearest">
-                                <input id="kt_td_picker_date_only_input" type="text" class="form-control" data-td-target="#kt_td_picker_date_only" name="birth_date" id="birth_date" required/>
-                                <span class="input-group-text" data-td-target="#kt_td_picker_date_only" data-td-toggle="datetimepicker">
-                                    <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
-                                </span>
-                            </div>
-                        </div>
+                        
                     </div>
             
                     <div class="modal-footer">
@@ -271,11 +267,10 @@
     verifyButton.addEventListener("click", function() {
         // Ambil data input
         var email = document.querySelector("[name='email']").value;
-        var id_university = document.querySelector("[name='id_university']").value;
-        var birth_date = document.querySelector("[name='birth_date']").value;
+        var phone = document.querySelector("[name='phone']").value;
 
         // Validasi input kosong
-        if (!email || !id_university || !birth_date) {
+        if (!email || !phone) {
             Swal.fire({
                 icon: 'error',
                 title: 'Data Tidak Lengkap!',
@@ -295,8 +290,7 @@
             },
             body: JSON.stringify({
                 email: email,
-                id_university: id_university,
-                birth_date: birth_date
+                phone: phone
             })
         })
         .then(response => response.json())
@@ -312,7 +306,14 @@
                     $('#modal_verify').modal('hide');
                     $('#modal_vote').modal('show');
                 });
-            } else if (data.status === "already_voted") {
+            } else if (data.status === "not_enough_data") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Minimal Dua Data Cocok',
+                    text: data.message,
+                });
+            }
+            else if (data.status === "already_voted") {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Sudah Memilih!',
@@ -394,21 +395,5 @@
     });
 </script>
 
-<script>
-    new tempusDominus.TempusDominus(document.getElementById("kt_td_picker_date_only"), {
-        display: {
-            viewMode: "calendar",
-            components: {
-                decades: true,
-                year: true,
-                month: true,
-                date: true,
-                hours: false,
-                minutes: false,
-                seconds: false
-            }
-        }
-    });
-</script>
 @endsection
 

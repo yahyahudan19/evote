@@ -28,36 +28,39 @@ class VoterController extends Controller
 
     public function verify(Request $request)
     {
-        $voter = Voter::where(function ($query) use ($request) {
-            $matches = 0;
+        // Hitung jumlah input yang diberikan
+        $matches = 0;
+        if ($request->filled('email')) $matches++;
+        if ($request->filled('phone')) $matches++;
 
-            if ($request->email) {
-            $query->orWhere('email', $request->email);
-            $matches++;
-            }
-
-            if ($request->id_university) {
-            $query->orWhere('id_card_number', $request->id_university);
-            $matches++;
-            }
-
-            if ($request->birth_date) {
-            $query->orWhere('birth_date', $request->birth_date);
-            $matches++;
-            }
-
-            if ($matches < 2) {
-            return null; // Not enough matches
-            }
-        })->first();
-        
-
-        if (!$voter) {
-            return response()->json(['status' => 'not_found', 'voter' => $voter]);
+        if ($matches < 2) {
+            return response()->json([
+                'status' => 'not_enough_data',
+                'message' => 'Minimal dua data harus diisi.'
+            ]);
         }
 
-        if ($voter->status == 'voted') {
-            return response()->json(['status' => 'already_voted', 'voted_at' => $voter->updated_at->format('d M Y')]);
+        // Jalankan query pencocokan
+        $voter = Voter::where(function ($query) use ($request) {
+            $query->when($request->email, fn($q) => $q->orWhere('email', $request->email));
+            $query->when($request->phone, fn($q) => $q->orWhere('phone', $request->phone));
+        })->get()->filter(function ($voter) use ($request) {
+            $match = 0;
+            if ($request->email && $voter->email === $request->email) $match++;
+            if ($request->phone && $voter->phone === $request->phone) $match++;
+            return $match >= 2;
+        })->first();
+
+        // Cek hasil
+        if (!$voter) {
+            return response()->json(['status' => 'not_found']);
+        }
+
+        if ($voter->status === 'voted') {
+            return response()->json([
+                'status' => 'already_voted',
+                'voted_at' => $voter->updated_at->format('d M Y')
+            ]);
         }
 
         // Simpan voter_id di session
