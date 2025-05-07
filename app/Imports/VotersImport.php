@@ -30,6 +30,7 @@ class VotersImport implements ToCollection, WithHeadingRow
                 'name'       => $row['name'],
                 'email'      => $row['email'],
                 'phone'      => $row['phone'],
+                'code'      => $row['code'],
                 'id_card_number'=> $row['id_card_number'],
                 'birth_date' => is_numeric($row['birth_date'])
                                 ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['birth_date'])

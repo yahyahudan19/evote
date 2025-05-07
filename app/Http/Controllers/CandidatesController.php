@@ -6,6 +6,8 @@ use App\Models\Candidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+
 
 class CandidatesController extends Controller
 {
@@ -84,6 +86,23 @@ class CandidatesController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Paslon berhasil ditambahkan.');
+    }
+
+    public function deleteAll(Request $request)
+    {
+        try {
+            Candidate::query()->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Semua data votes dan candidates berhasil dihapus.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'.$e->getMessage()
+            ]);
+        }
     }
 
 

@@ -27,9 +27,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/voter', [VoterController::class, 'admin'])->name('voter.admin');
     Route::get('/admin/voters/store', [VoterController::class, 'store'])->name('voter.store.admin');
     Route::post('/voters/import', [VoterController::class, 'import'])->name('voters.import');
+    Route::get('/voters/export', [VoterController::class, 'export'])->name('voters.export');
+    Route::delete('/voters/delete-all', [VoterController::class, 'deleteAll'])->name('voters.deleteAll');
     
     Route::get('/candidates', [CandidatesController::class, 'index'])->name('candidates.admin');
     Route::post('/candidates/store', [CandidatesController::class, 'store'])->name('candidates.store');
+    Route::delete('/candidates/delete-all', [CandidatesController::class, 'deleteAll'])->name('candidates.deleteAll');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

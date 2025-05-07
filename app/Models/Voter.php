@@ -15,6 +15,7 @@ class Voter extends Model
         'email',
         'phone',
         'birth_date',
+        'code',
         'status',
         'id_card_number',
     ];

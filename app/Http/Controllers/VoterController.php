@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\VotersExport;
 use App\Models\Candidate;
 use App\Models\Vote;
 use App\Models\Voter;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Imports\VotersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class VoterController extends Controller
 {
@@ -32,24 +34,27 @@ class VoterController extends Controller
         $matches = 0;
         if ($request->filled('email')) $matches++;
         if ($request->filled('phone')) $matches++;
+        if ($request->filled('code')) $matches++;
 
-        if ($matches < 2) {
+        if ($matches < 3) {
             return response()->json([
                 'status' => 'not_enough_data',
-                'message' => 'Minimal dua data harus diisi.'
+                'message' => 'Minimal tiga data harus diisi.'
             ]);
         }
 
         // Jalankan query pencocokan
         $voter = Voter::where(function ($query) use ($request) {
-            $query->when($request->email, fn($q) => $q->orWhere('email', $request->email));
-            $query->when($request->phone, fn($q) => $q->orWhere('phone', $request->phone));
-        })->get()->filter(function ($voter) use ($request) {
-            $match = 0;
-            if ($request->email && $voter->email === $request->email) $match++;
-            if ($request->phone && $voter->phone === $request->phone) $match++;
-            return $match >= 2;
-        })->first();
+            if ($request->filled('email')) {
+                $query->where('email', $request->email);
+            }
+            if ($request->filled('phone')) {
+                $query->where('phone', $request->phone);
+            }
+            if ($request->filled('code')) {
+                $query->where('code', $request->code);
+            }
+        })->first(); // Ambil data pertama yang cocok dengan semua field yang diisi
 
         // Cek hasil
         if (!$voter) {
@@ -130,4 +135,31 @@ class VoterController extends Controller
         return redirect()->back();
     }
 
+    public function export(Request $request)
+    {
+        // Validasi input status pemilih
+        $request->validate([
+            'voter_status' => 'required|in:voted,not_voted',
+        ]);
+
+        // Ekspor data berdasarkan status
+        return Excel::download(new VotersExport($request->voter_status), 'voters_' . $request->voter_status . '.xlsx');
+    }
+
+    public function deleteAll(Request $request)
+    {
+        try {
+            Voter::query()->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Semua data voters dan votes berhasil dihapus.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'.$e->getMessage()
+            ]);
+        }
+    }
 }

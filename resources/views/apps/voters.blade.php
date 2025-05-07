@@ -185,6 +185,10 @@
                             <label class="required form-label">Phone Number</label>
                             <input type="text" class="form-control form-control-solid" placeholder="08123456789" name="phone" id="phone" required/>
                         </div>
+                        <div class="mb-5">
+                            <label class="required form-label">Code</label>
+                            <input type="text" class="form-control form-control-solid" placeholder="1234" name="code" id="code" required/>
+                        </div>
                         
                     </div>
             
@@ -268,9 +272,10 @@
         // Ambil data input
         var email = document.querySelector("[name='email']").value;
         var phone = document.querySelector("[name='phone']").value;
+        var code = document.querySelector("[name='code']").value;
 
         // Validasi input kosong
-        if (!email || !phone) {
+        if (!email || !phone || !code) {
             Swal.fire({
                 icon: 'error',
                 title: 'Data Tidak Lengkap!',
@@ -290,7 +295,8 @@
             },
             body: JSON.stringify({
                 email: email,
-                phone: phone
+                phone: phone,
+                code: code
             })
         })
         .then(response => response.json())
@@ -309,7 +315,7 @@
             } else if (data.status === "not_enough_data") {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Minimal Dua Data Cocok',
+                    title: 'Minimal Tiga Data Cocok',
                     text: data.message,
                 });
             }

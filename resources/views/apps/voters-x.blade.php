@@ -65,8 +65,13 @@
             <div class="card-toolbar">
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
+                     <!--begin::Delete All Voters-->
+                    <button type="button" class="btn btn-danger me-3" id="delete_all_voters_button">
+                        <i class="ki-outline ki-trash-square fs-2"></i>Clear Data
+                    </button>
+                    <!--end::Delete All Voters-->
                     <!--begin::Filter-->
-                    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                    <button type="button" class="btn btn-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                     <i class="ki-outline ki-filter fs-2"></i>Filter</button>
                     <!--begin::Menu 1-->
                     <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
@@ -103,13 +108,17 @@
                     <!--end::Menu 1-->
                     <!--end::Filter-->
                     <!--begin::Export-->
-                    <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
-                    <i class="ki-outline ki-cloud-download fs-2"></i>Import</button>
+                    <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
+                    <i class="ki-outline ki-cloud-add fs-2"></i>Import</button>
+                    <!--begin::Export-->
+                    <button type="button" class="btn btn-warning me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_voters">
+                    <i class="ki-outline ki-cloud-download fs-2"></i>Export</button>
                     <!--end::Export-->
-                    <!--begin::Add user-->
+                   
+                    {{-- <!--begin::Add user-->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
                     <i class="ki-outline ki-plus fs-2"></i>Add Voters</button>
-                    <!--end::Add user-->
+                    <!--end::Add user--> --}}
                 </div>
                 <!--end::Toolbar-->
                 <!--begin::Group actions-->
@@ -119,7 +128,7 @@
                     <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">Delete Selected</button>
                 </div>
                 <!--end::Group actions-->
-                <!--begin::Modal - Adjust Balance-->
+                <!--begin::Modal - Import User-->
                 <div class="modal fade" id="kt_modal_export_users" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
                     <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -174,7 +183,48 @@
                     </div>
                     <!--end::Modal dialog-->
                 </div>
-                <!--end::Modal - New Card-->
+                <!--end::Modal - Import User-->
+
+                <!-- Modal - Export User -->
+                <div class="modal fade" id="kt_modal_export_voters" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="fw-bold">Export Voters</h2>
+                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                                    <i class="ki-outline ki-cross fs-1"></i>
+                                </div>
+                            </div>
+                            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                <!-- Form -->
+                                <form id="kt_modal_export_voters_form" class="form" action="{{ route('voters.export') }}" method="GET">
+                                    <!-- Input group -->
+                                    <div class="fv-row mb-10">
+                                        <label class="fs-6 fw-semibold form-label mb-2">Pilih Status Pemilih:</label>
+                                        <select name="voter_status" data-control="select2" class="form-select form-select-solid">
+                                            <option value="voted">Sudah Vote</option>
+                                            <option value="not_voted">Belum Vote</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="text-center">
+                                        <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal" aria-label="Close">Discard</button>
+                                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                            <span class="indicator-label">Export</span>
+                                            <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal - Export User -->
+
+
                 <!--begin::Modal - Add task-->
                 <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
@@ -380,19 +430,78 @@
 
 <script>
     new tempusDominus.TempusDominus(document.getElementById("kt_td_picker_date_only"), {
-    display: {
-        viewMode: "calendar",
-        components: {
-            decades: true,
-            year: true,
-            month: true,
-            date: true,
-            hours: false,
-            minutes: false,
-            seconds: false
+        display: {
+            viewMode: "calendar",
+            components: {
+                decades: true,
+                year: true,
+                month: true,
+                date: true,
+                hours: false,
+                minutes: false,
+                seconds: false
+            }
         }
-    }
-});
+    });
+</script>
+
+<script>
+    document.querySelector("#delete_all_voters_button").addEventListener("click", function() {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Semua data voters dan votes akan dihapus!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus Semua!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading indicator
+                var button = this;
+                button.setAttribute("disabled", "true"); // Disable button
+                button.innerHTML = "Loading..."; // Change button text to Loading
+
+                // Kirim request untuk menghapus data
+                fetch("{{ route('voters.deleteAll') }}", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove loading indicator
+                    button.removeAttribute("disabled");
+                    button.innerHTML = '<i class="ki-outline ki-trash-square fs-2"></i>Clear Data';
+
+                    // Show success alert
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message,
+                        }).then(() => {
+                        // Reload the page after success
+                        window.location.reload(); // Reload halaman untuk menampilkan data yang terhapus
+                    });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: data.message,
+                        });
+                    }
+                })
+                .catch(error => {
+                    button.removeAttribute("disabled");
+                    button.innerHTML = '<i class="ki-outline ki-trash-square fs-2"></i>Clear Data';
+                    console.error("Error:", error);
+                });
+            }
+        });
+    });
 </script>
 
 @endsection

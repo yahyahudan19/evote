@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->date('birth_date');
+            $table->string('code')->unique();
             $table->enum('status', ['not_voted', 'voted'])->default('not_voted');
             $table->timestamps();
         });
