@@ -317,6 +317,7 @@
         });
     });
 </script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var options = {
@@ -324,7 +325,7 @@
                 type: 'donut',
                 height: 400
             },
-            series: @json($series),
+            series: @json($series->pluck('votes')->toArray()),  // Pass only the votes count
             labels: @json($labels),
             colors: ['#3E97FF', '#F1416C', '#50CD89', '#FFC700', '#7239EA', '#00A3FF'],
             legend: {
@@ -333,13 +334,14 @@
             dataLabels: {
                 enabled: true,
                 formatter: function (val, opts) {
-                    return opts.w.config.series[opts.seriesIndex] + ' suara';
+                    const percentage = opts.w.config.series[opts.seriesIndex] / {{ $totalVoted }} * 100;
+                    return percentage.toFixed(2) + '%';  // Display percentage
                 }
             },
             tooltip: {
                 y: {
                     formatter: function (val) {
-                        return val + " suara";
+                        return val + " suara";  // Display the number of votes when hovered
                     }
                 }
             }
@@ -349,6 +351,9 @@
         chart.render();
     });
 </script>
+
+
+
 
 
 

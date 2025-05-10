@@ -12,20 +12,35 @@ class DashboardController extends Controller
     public function index()
     {
         $candidates = Candidate::withCount('votes')->orderBy('candidate_number')->get();
+        $election = Election::first(); // Get the first election data (if exists)
 
-        $election = Election::first(); // Ambil election pertama (jika ada)
+        // Total votes from users who have voted
+        $totalVoted = Voter::where('status', 'voted')->count();
 
-
+        // Prepare labels for the chart
         $labels = $candidates->map(function ($c) {
             return "No. {$c->candidate_number} - {$c->ketua_name} & {$c->wakil_name}";
         });
 
-        $series = $candidates->map->votes_count;
+        // Prepare series data for votes and percentages
+        $series = $candidates->map(function ($c) use ($totalVoted) {
+            $votesCount = $c->votes_count;
+            $percentage = $totalVoted > 0 ? ($votesCount / $totalVoted) * 100 : 0; // Calculate percentage based on total votes
+            return [
+                'votes' => $votesCount,
+                'percentage' => $percentage
+            ];
+        });
 
+        // Count voters that have and haven't voted
         $votersNotVoted = Voter::where('status', 'not_voted')->count();
         $votersVoted = Voter::where('status', 'voted')->count();
 
-        return view('dashboard', compact('labels', 'series','votersNotVoted', 'votersVoted','election'));
+        // Pass the data to the view
+        return view('dashboard', compact('labels', 'series', 'votersNotVoted', 'votersVoted', 'election','totalVoted'));
     }
+
+
+
 }
 
