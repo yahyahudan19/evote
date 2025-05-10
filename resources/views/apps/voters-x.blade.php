@@ -347,7 +347,7 @@
                         <th class="min-w-125px">Name</th>
                         <th class="min-w-125px">ID Number</th>
                         <th class="min-w-125px">Phone</th>
-                        <th class="min-w-125px">Birth Date</th>
+                        <th class="min-w-125px">Code</th>
                         <th class="min-w-125px">Status</th>
                         <th class="text-end min-w-100px">Actions</th>
                     </tr>
@@ -377,11 +377,17 @@
                             </div>
                             <!--begin::User details-->
                         </td>
-                        <td>{{$vot->id_card_number}}</td>
-                        <td>
-                            <div class="badge badge-light fw-bold">{{$vot->phone}}</div>
+                        <td onclick="Swal.fire('Full ID Card Number', '{{ $vot->id_card_number }}', 'info')" style="cursor: pointer;">
+                            {{ substr($vot->id_card_number, 0, 3) . '***' }}
                         </td>
-                        <td>{{ \Carbon\Carbon::parse($vot->birth_date)->translatedFormat('d F Y') }}</td>
+                        <td onclick="Swal.fire('Full Phone Number', '{{ $vot->phone }}', 'info')" style="cursor: pointer;">
+                            <div class="badge badge-light fw-bold">{{ substr($vot->phone, 0, -4) . '****' }}</div>
+                        </td>
+                        <td>
+                            <div class="badge badge-light fw-bold" style="cursor: pointer;" onclick="Swal.fire('Full Code', '{{ $vot->code }}', 'info')">
+                                {{ substr($vot->code, 0, 2) . '****' }}
+                            </div>
+                        </td>
                         <td>
                             @if ($vot->status == "voted")
                                 <div class="badge badge-success fw-bold">Sudah Voting</div>
