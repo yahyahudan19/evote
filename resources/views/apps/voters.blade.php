@@ -136,9 +136,23 @@
                     <!--end::Text-->
                 </div>
                 <!--end::Top-->
-               
+                
                 <!--begin::Action-->
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modal_verify" class="btn btn-danger mb-5">Vote</a>
+                @if (\Carbon\Carbon::now()->greaterThan(\Carbon\Carbon::parse($election->end_time)))
+                    <button class="btn btn-danger mb-5" onclick="event.preventDefault(); Swal.fire({
+                        icon: 'info',
+                        title: 'Voting Ended',
+                        text: 'The voting process has already ended. Thank you for your participation.',
+                    })">Vote</button>
+                @elseif ($election->status === 'Y')
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal_verify" class="btn btn-danger mb-5">Vote</a>
+                @else
+                    <button class="btn btn-danger mb-5" onclick="event.preventDefault(); Swal.fire({
+                        icon: 'info',
+                        title: 'Voting Not Started',
+                        text: 'The voting process has not started yet. Please wait for further announcements.',
+                    })">Vote</button>
+                @endif
                 <!--end::Action-->
             </div>
             <!--end::Join-->
@@ -191,7 +205,7 @@
                         </div>
                         
                     </div>
-            
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary me-10" id="kt_button_verify">
@@ -261,6 +275,7 @@
         $('#candidate_id_select').select2({
             dropdownParent: $('#modal_vote')
         });
+       
     });
 </script>
 

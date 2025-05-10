@@ -8,6 +8,7 @@ use App\Models\Vote;
 use App\Models\Voter;
 use Illuminate\Http\Request;
 use App\Imports\VotersImport;
+use App\Models\Election;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +19,17 @@ class VoterController extends Controller
     {
         // Logic to display a list of voters
         $candidates = Candidate::orderBy('candidate_number', 'asc')->get();
-        return view('apps.voters', compact('candidates'));
+        $election = Election::first(); // Ambil election pertama (jika ada)
+        
+        return view('apps.voters', compact('candidates','election'));
     }
 
     public function admin()
     {
         // Logic to display a list of voters
         $voters = Voter::orderBy('created_at', 'desc')->get();
-        return view('apps.voters-x', compact('voters'));
+        $election = Election::first(); // Ambil election pertama (jika ada)
+        return view('apps.voters-x', compact('voters','election'));
     }
 
     public function verify(Request $request)
@@ -76,6 +80,22 @@ class VoterController extends Controller
 
     public function vote(Request $request)
     {
+        $election = Election::first();
+
+        if (!$election || $election->status !== 'Y') {
+            return response()->json([
+            'status' => 'failed',
+            'message' => 'Pemilihan belum dimulai atau tidak tersedia.'
+            ]);
+        }
+
+        if ($election->end_time && now()->greaterThan($election->end_time)) {
+            return response()->json([
+            'status' => 'failed',
+            'message' => 'Pemilihan telah berakhir.'
+            ]);
+        }
+
         $voter_id = session('voter_id');
 
         if (!$voter_id) {
@@ -90,7 +110,7 @@ class VoterController extends Controller
                 'candidate_id' => $request->candidate_id,
                 'voted_at' => now(),
             ]);
-
+            
             $voter->update(['status' => 'voted']);
 
             return response()->json(['status' => 'success']);

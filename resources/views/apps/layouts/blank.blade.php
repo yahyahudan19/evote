@@ -76,7 +76,9 @@
 								<!--end::Logo image-->
 							</div>
 							<!--end::Header logo-->
-
+							<!--begin::Menu wrapper-->
+							@include('apps.layouts.headerb')
+							<!--end::Menu wrapper-->
 							<!--begin::Navbar-->
 							@include('apps.layouts.navb')
 							<!--end::Navbar-->
@@ -89,8 +91,6 @@
 				
 				<!--begin::Wrapper-->
 				<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
-					
-
 					<!--begin::Wrapper container-->
 					<div class="app-container container-xxl">
 						<!--begin::Main-->
@@ -151,7 +151,60 @@
 		<!--end::Global Javascript Bundle-->
         @yield('plugins-last')
 		<!--end::Javascript-->
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+				// Cek status pemilihan
+				const electionStatus = "{{ $election->status }}"; // 'Y' untuk aktif, 'N' untuk belum dimulai
 		
+				if (electionStatus === 'Y') {
+					// Ambil waktu selesai pemilihan yang dikirim dari controller
+					const endTime = new Date("{{ $election->end_time }}"); // Format: YYYY-MM-DD HH:MM:SS
+		
+					// Fungsi untuk memperbarui waktu yang tersisa
+					function updateCountdown() {
+						const now = new Date();
+						const timeLeft = endTime - now;
+		
+						const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+						const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+						const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+						const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+		
+						// Update text untuk waktu yang tersisa
+						let timeText = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+		
+						document.getElementById("time_remaining").innerText = `Time Remaining: ${timeText}`;
+		
+						// Ganti warna button berdasarkan waktu yang tersisa
+						const button = document.getElementById("time_remaining_button");
+		
+						if (timeLeft <= 0) {
+							button.classList.remove("btn-success", "btn-warning", "btn-danger");
+							button.classList.add("btn-danger");
+							document.getElementById("time_remaining").innerText = "Pemilihan Selesai";
+						} else if (daysLeft > 1) {
+							button.classList.remove("btn-warning", "btn-danger");
+							button.classList.add("btn-success");
+						} else if (hoursLeft >= 1) {
+							button.classList.remove("btn-success", "btn-danger");
+							button.classList.add("btn-warning");
+						} else {
+							button.classList.remove("btn-success", "btn-warning");
+							button.classList.add("btn-danger");
+						}
+					}
+		
+					// Memperbarui waktu setiap detik
+					setInterval(updateCountdown, 1000);
+				} else {
+					// Jika status pemilihan adalah 'N'
+					document.getElementById("time_remaining").innerText = "Election Not Started";
+					const button = document.getElementById("time_remaining_button");
+					button.classList.remove("btn-success", "btn-warning", "btn-danger");
+					button.classList.add("btn-secondary");
+				}
+			});
+		</script>
 	</body>
 	<!--end::Body-->
 </html>

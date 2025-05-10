@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CandidatesController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ElectionsController;
 use App\Http\Controllers\VoterController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -33,10 +34,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/candidates', [CandidatesController::class, 'index'])->name('candidates.admin');
     Route::post('/candidates/store', [CandidatesController::class, 'store'])->name('candidates.store');
     Route::delete('/candidates/delete-all', [CandidatesController::class, 'deleteAll'])->name('candidates.deleteAll');
+    Route::delete('/candidates/delete/{id}', [CandidatesController::class, 'delete'])->name('candidates.delete');
+    Route::get('/candidates/edit/{id}', [CandidatesController::class, 'showEditForm'])->name('candidates.edit');
+    Route::put('/candidates/update', [CandidatesController::class, 'update'])->name('candidates.update');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-
+    Route::get('/election/status', [ElectionsController::class, 'showElectionStatus'])->name('election.status');
+    Route::post('/election/update', [ElectionsController::class, 'updateElection'])->name('election.update');
 
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');

@@ -104,12 +104,12 @@
     <!--end::User menu-->
 
     <!--begin::Action-->
-    <div class="app-navbar-item ms-2">
-        <a href="#" class="btn btn-flex btn-icon btn-secondary align-self-center fw-bold h-35px w-md-100 py-2 px-4" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">
-            <i class="ki-outline ki-crown-2 fs-4"></i>
-            <span class="d-none d-md-inline ms-1 fs-7">Try Premium</span>
+    {{-- <div class="app-navbar-item ms-2">
+        <a href="#" class="btn btn-flex btn-icon btn-danger align-self-center fw-bold h-35px w-md-100 py-2 px-4">
+            <i class="ki-outline ki-calendar-2 fs-4"></i>
+            <span class="d-none d-md-inline ms-1 fs-7">Change Time Election</span>
         </a>
-    </div>
+    </div> --}}
     <!--end::Action-->
     <!--begin::Sidebar menu toggle-->
     <!--end::Sidebar menu toggle-->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\Election;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -15,7 +16,8 @@ class CandidatesController extends Controller
     {
         // Logic to fetch and display candidates
         $canditates = Candidate::all();
-        return view('apps.candidate', compact('canditates'));
+        $election = Election::first(); // Ambil election pertama (jika ada)
+        return view('apps.candidate', compact('canditates','election'));
     }
 
 
@@ -91,6 +93,20 @@ class CandidatesController extends Controller
     public function deleteAll(Request $request)
     {
         try {
+            // Ambil semua data candidates
+            $candidates = Candidate::all();
+
+            // Hapus gambar ketua dan wakil dari storage
+            foreach ($candidates as $candidate) {
+                if ($candidate->ketua_image_path) {
+                    Storage::disk('public')->delete($candidate->ketua_image_path);
+                }
+                if ($candidate->wakil_image_path) {
+                    Storage::disk('public')->delete($candidate->wakil_image_path);
+                }
+            }
+
+            // Hapus semua data di tabel candidates
             Candidate::query()->delete();
 
             return response()->json([
@@ -103,6 +119,102 @@ class CandidatesController extends Controller
                 'message' => 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.'.$e->getMessage()
             ]);
         }
+    }
+
+    public function delete($id)
+    {
+        try {
+            // Cari data candidate berdasarkan ID
+            $candidate = Candidate::findOrFail($id);
+
+            // Hapus gambar ketua dan wakil jika ada
+            if ($candidate->ketua_image_path) {
+                // Hapus file ketua
+                Storage::disk('public')->delete($candidate->ketua_image_path);
+            }
+
+            if ($candidate->wakil_image_path) {
+                // Hapus file wakil
+                Storage::disk('public')->delete($candidate->wakil_image_path);
+            }
+
+            // Hapus data candidate
+            $candidate->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Paslon berhasil dihapus beserta gambarnya.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menghapus data. Coba lagi nanti.'
+            ]);
+        }
+    }
+
+    public function showEditForm($id)
+    {
+        // Ambil data candidate berdasarkan ID
+        $candidate = Candidate::findOrFail($id);
+
+        return response()->json($candidate);  // Kirim data untuk mengisi form edit
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'ketua_name' => 'required|string',
+            'wakil_name' => 'required|string',
+            'description' => 'required|string',
+            'ketua_avatar' => 'nullable|image|mimes:jpeg,png,jpg',
+            'wakil_avatar' => 'nullable|image|mimes:jpeg,png,jpg',
+        ]);
+
+        $candidate = Candidate::findOrFail($request->candidate_id);
+
+        // Handle image upload for ketua
+        if ($request->hasFile('ketua_avatar')) {
+            // Hapus file lama
+            Storage::disk('public')->delete($candidate->ketua_image_path);
+
+            // Simpan file baru
+            $ketuaPath = $request->file('ketua_avatar')->storeAs(
+                'candidates/ketua',
+                strtolower(str_replace(' ', '-', $request->ketua_name)) . '_candidates-' . $candidate->candidate_number . '.' . $request->file('ketua_avatar')->getClientOriginalExtension(),
+                'public'
+            );
+
+            $candidate->ketua_image_path = $ketuaPath;
+        }
+
+        // Handle image upload for wakil
+        if ($request->hasFile('wakil_avatar')) {
+            // Hapus file lama
+            Storage::disk('public')->delete($candidate->wakil_image_path);
+
+            // Simpan file baru
+            $wakilPath = $request->file('wakil_avatar')->storeAs(
+                'candidates/wakil',
+                strtolower(str_replace(' ', '-', $request->wakil_name)) . '_candidates-' . $candidate->candidate_number . '.' . $request->file('wakil_avatar')->getClientOriginalExtension(),
+                'public'
+            );
+
+            $candidate->wakil_image_path = $wakilPath;
+        }
+
+        // Update other fields
+        $candidate->ketua_name = $request->ketua_name;
+        $candidate->wakil_name = $request->wakil_name;
+        $candidate->description = $request->description;
+
+        // Save the candidate
+        $candidate->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Paslon berhasil diperbarui.'
+        ]);
     }
 
 

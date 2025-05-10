@@ -133,7 +133,7 @@
                 </div>
                 <!--end::Group actions-->
                
-                <!--begin::Modal - Add task-->
+                <!--begin::Modal - Add Candidates-->
                 <div class="modal fade" id="kt_modal_add_user" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
                     <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -270,7 +270,121 @@
                     </div>
                     <!--end::Modal dialog-->
                 </div>
-                <!--end::Modal - Add task-->
+                <!--end::Modal - Add Candidates-->
+
+                <!--begin::Modal - Edit Candidate-->
+                <div class="modal fade" id="kt_modal_edit_candidate" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                        <div class="modal-content">
+                            <!--begin::Modal header-->
+                            <div class="modal-header">
+                                <h2 class="fw-bold">Edit Candidates</h2>
+                                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                                    <i class="ki-outline ki-cross fs-1"></i>
+                                </div>
+                            </div>
+                            <!--end::Modal header-->
+                            
+                            <!--begin::Modal body-->
+                            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                <!--begin::Form-->
+                                <form id="kt_modal_edit_candidate_form" class="form" method="POST" enctype="multipart/form-data" action="{{ route('candidates.update') }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <!-- Candidate ID (hidden) -->
+                                    <input type="hidden" name="candidate_id" id="candidate_id">
+                                    
+                                     <!--begin::Row-->
+                                     <div class="row mb-7">
+                                        <!--begin::Column-->
+                                        <div class="col-md-6">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row">
+                                                <!--begin::Label-->
+                                                <label class="d-block fw-semibold fs-6 mb-5">Ketua Image</label>
+                                                <!--end::Label-->
+                                                <!--begin::Image input-->
+                                                <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
+                                                    <div class="image-input-wrapper w-125px h-125px" id="edit_ketua_image"></div>
+                                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                                        <i class="ki-outline ki-pencil fs-7"></i>
+                                                        <input type="file" name="ketua_avatar" accept=".png, .jpg, .jpeg" />
+                                                        <input type="hidden" name="ketua_avatar_remove" />
+                                                    </label>
+                                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                                        <i class="ki-outline ki-cross fs-2"></i>
+                                                    </span>
+                                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                                        <i class="ki-outline ki-cross fs-2"></i>
+                                                    </span>
+                                                </div>
+                                                <!--end::Image input-->
+                                                <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Column-->
+                                        <!--begin::Column-->
+                                        <div class="col-md-6">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row">
+                                                <!--begin::Label-->
+                                                <label class="d-block fw-semibold fs-6 mb-5">Wakil Image</label>
+                                                <!--end::Label-->
+                                                <!--begin::Image input-->
+                                                <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
+                                                    <div class="image-input-wrapper w-125px h-125px" id="edit_wakil_image"></div>
+                                                    <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                                        <i class="ki-outline ki-pencil fs-7"></i>
+                                                        <input type="file" name="wakil_avatar" accept=".png, .jpg, .jpeg" />
+                                                        <input type="hidden" name="wakil_avatar_remove" />
+                                                    </label>
+                                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                                        <i class="ki-outline ki-cross fs-2"></i>
+                                                    </span>
+                                                    <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                                        <i class="ki-outline ki-cross fs-2"></i>
+                                                    </span>
+                                                </div>
+                                                <!--end::Image input-->
+                                                <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Column-->
+                                    </div>
+                                    <!--end::Row-->
+                                    <div class="fv-row mb-7">
+                                        <label class="required fw-semibold fs-6 mb-2">Ketua Name</label>
+                                        <input type="text" name="ketua_name" id="edit_ketua_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Edy Fakboy" />
+                                    </div>
+
+                                    <div class="fv-row mb-7">
+                                        <label class="required fw-semibold fs-6 mb-2">Wakil Name</label>
+                                        <input type="text" name="wakil_name" id="edit_wakil_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Naufal" />
+                                    </div>
+
+                                    <div class="fv-row mb-7">
+                                        <label class="required fw-semibold fs-6 mb-2">Description</label>
+                                        <input type="text" name="description" id="edit_description" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Yondaktau" />
+                                    </div>
+
+                                    <div class="text-center pt-10">
+                                        <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal" aria-label="Close">Discard</button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <span class="indicator-label">Save Changes</span>
+                                            <span class="indicator-progress">Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                    </div>
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal - Edit Candidate-->
+
+
             </div>
             <!--end::Card toolbar-->
         </div>
@@ -296,7 +410,7 @@
                 </thead>
                 <tbody class="text-gray-600 fw-semibold">
                     @foreach ($canditates as $cand)
-                    <tr>
+                    <tr data-id="{{ $cand->id }}">
                         <td>
                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                 <input class="form-check-input" type="checkbox" value="1" />
@@ -337,12 +451,13 @@
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
+                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="edit_row" data-id="{{ $cand->id }}">Edit</a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
+                                    <!-- Add data-id for AJAX use -->
+                                    <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row" data-id="{{ $cand->id }}">Delete</a>
                                 </div>
                                 <!--end::Menu item-->
                             </div>
@@ -365,7 +480,8 @@
 <!--begin::Vendors Javascript(used for this page only)-->
 <script src="{{ asset('templates/assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
 <!--end::Vendors Javascript-->
-<script src="{{ asset('templates/assets/js/custom/apps/user-management/users/list/table.js')}}"></script>
+{{-- <script src="{{ asset('templates/assets/js/custom/apps/user-management/users/list/table.js')}}"></script> --}}
+<script src="{{ asset('templates/assets/js/custom/evote/candidatesjs/table.js')}}"></script>
 {{-- <script src="{{ asset('templates/assets/js/custom/apps/user-management/users/list/add.js')}}"></script> --}}
 <script>
     "use strict";
@@ -617,6 +733,104 @@
                 });
             }
         });
+    });
+</script>
+
+<script>
+    var handleEditRow = () => {
+        const editButtons = document.querySelectorAll('[data-kt-users-table-filter="edit_row"]');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // Get candidate id from data-id
+            const rowId = this.getAttribute('data-id');
+            
+            // Fetch candidate data using AJAX
+            fetch('/candidates/edit/' + rowId)
+                .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch candidate data');
+                }
+                return response.json();
+                })
+                .then(candidate => {
+                // Populate form fields
+                document.getElementById('candidate_id').value = candidate.id;
+                document.getElementById('edit_ketua_name').value = candidate.ketua_name;
+                document.getElementById('edit_wakil_name').value = candidate.wakil_name;
+                document.getElementById('edit_description').value = candidate.description;
+                
+                // Set image preview for ketua and wakil
+                document.getElementById('edit_ketua_image').style.backgroundImage = 'url(' + window.location.origin + '/storage/' + candidate.ketua_image_path + ')';
+                document.getElementById('edit_wakil_image').style.backgroundImage = 'url(' + window.location.origin + '/storage/' + candidate.wakil_image_path + ')';
+
+                // Show the modal
+                $('#kt_modal_edit_candidate').modal('show');
+                })
+                .catch(error => {
+                console.error('Error fetching candidate:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to fetch candidate data. Please try again.',
+                });
+                });
+            });
+        });
+
+        // Handle form submission for edit
+        const editForm = document.getElementById('kt_modal_edit_candidate_form');
+        editForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+            })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update candidate');
+            }
+            return response.json();
+            })
+            .then(data => {
+            if (data.status === 'success') {
+                Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: data.message,
+                }).then(() => {
+                window.location.reload(); // Reload the page on success
+                });
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message,
+                });
+            }
+            })
+            .catch(error => {
+            console.error('Error updating candidate:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to update candidate. Please try again.',
+            });
+            });
+        });
+    }
+
+    // Call the function after DOM is loaded or when needed
+    document.addEventListener('DOMContentLoaded', function() {
+        handleEditRow();
     });
 </script>
 

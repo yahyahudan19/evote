@@ -17,7 +17,7 @@
                 <!--begin::Body-->
                 <div class="card-body d-flex justify-content-between flex-column ps-xl-18">
                     <!--begin::Heading-->
-                    <div class="mb-20 pt-xl-13">
+                    <div class="mb-10 pt-xl-13">
                         <!--begin::Title-->
                         <h3 class="fw-bold text-white fs-4x mb-5 ms-n1">Hello, Welcome Back !</h3>
                         <!--end::Title-->
@@ -37,52 +37,125 @@
                             }
                         @endphp
 
-                        <span class="fw-bold text-white fs-4 mb-8 d-block lh-0">{{ $greeting }}, Mr. {{ auth()->user()->name }}</span>
+                        <span class="fw-bold text-white fs-4 mb-8 d-block lh-0 mb-10">{{ $greeting }}, Mr. {{ auth()->user()->name }}</span>
+                        
                         <!--end::Description-->
                         <!--begin::Items-->
                         <div class="d-flex align-items-center">
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center me-6">
-                                <!--begin::Icon-->
-                                <a href="#" class="me-2">
-                                    <i class="bi bi-play-fill text-primary fs-3"></i>
-                                </a>
-                                <!--end::Icon-->
-                                <!--begin::Info-->
-                                <span class="fw-semibold text-white fs-6">70,000+ plays</span>
-                                <!--end::Info-->
-                            </div>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <div class="d-flex align-items-center">
-                                <!--begin::Icon-->
-                                <a href="#" class="me-2">
-                                    <i class="bi bi-headset text-primary fs-3"></i>
-                                </a>
-                                <!--end::Icon-->
-                                <!--begin::Info-->
-                                <span class="fw-semibold text-white fs-6">372 listening now</span>
-                                <!--end::Info-->
-                            </div>
-                            <!--end::Item-->
+                            @if($election->status === 'Y')
+                                <!--begin::Item-->
+                                <div class="d-flex align-items-center me-6">
+                                    <!--begin::Icon-->
+                                    <a href="#" class="me-2">
+                                        <i class="bi bi-calendar-check-fill text-primary fs-3"></i>
+                                    </a>
+                                    <!--end::Icon-->
+                                    <!--begin::Info-->
+                                    <span class="fw-semibold text-white fs-6">Election Time : </span>
+                                    <!--end::Info-->
+                                </div>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <div class="d-flex align-items-center me-6">
+                                    <!--begin::Icon-->
+                                    <a href="#" class="me-2">
+                                        <i class="bi bi-stopwatch-fill text-primary fs-3"></i>
+                                    </a>
+                                    <!--end::Icon-->
+                                    <!--begin::Info-->
+                                    <span class="fw-semibold text-white fs-6">{{ \Carbon\Carbon::parse($election->start_time)->translatedFormat('d F Y \P\u\k\u\l H:i') }}</span>
+                                    <!--end::Info-->
+                                </div>
+                                <!--end::Item-->
+                                <!--begin::Item-->
+                                <div class="d-flex align-items-center">
+                                    <!--begin::Icon-->
+                                    <a href="#" class="me-2">
+                                        <i class="bi bi-sign-stop text-primary fs-3"></i>
+                                    </a>
+                                    <!--end::Icon-->
+                                    <!--begin::Info-->
+                                    <span class="fw-semibold text-white fs-6">{{ \Carbon\Carbon::parse($election->end_time)->translatedFormat('d F Y \P\u\k\u\l H:i') }}</span>
+                                    <!--end::Info-->
+                                </div>
+                                <!--end::Item-->
+                            @endif
                         </div>
                         <!--end::Items-->
                     </div>
                     <!--end::Heading-->
                     <!--begin::Action-->
                     <div class="mb-xl-10 mb-3">
-                        <a href='#' class="btn btn-primary fw-semibold me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_upgrade_plan">Listen Now</a>
-                        <a href="apps/support-center/overview.html" class="btn btn-color-white bg-transparent btn-outline fw-semibold" style="border: 1px solid rgba(255, 255, 255, 0.3)">Save for Later</a>
+                        <a href='#' class="btn btn-warning fw-semibold me-2" data-bs-toggle="modal" data-bs-target="#kt_modal_ctes">Change Time Election</a>
+                        @php
+                            $now = \Carbon\Carbon::now('Asia/Jakarta');
+                            if ($election->status === 'Y') {
+                                if ($now->lt(\Carbon\Carbon::parse($election->start_time))) {
+                                    $electionStatus = 'Open Election, But Not Started Yet';
+                                } elseif ($now->gt(\Carbon\Carbon::parse($election->end_time))) {
+                                    $electionStatus = 'Open Election, But Already Ended';
+                                } else {
+                                    $electionStatus = 'Open Election';
+                                }
+                            } else {
+                                $electionStatus = 'Election Not Started';
+                            }
+                        @endphp
+                        <a href="#" class="btn btn-color-white bg-transparent btn-outline fw-semibold" style="border: 1px solid rgba(255, 255, 255, 0.3)">Status : {{ $electionStatus }}</a>
                     </div>
                     <!--begin::Action-->
                 </div>
                 <!--end::Body-->
+                <!--begin::Modal Change Time n Status Election-->
+                <div class="modal fade" tabindex="-1" id="kt_modal_ctes">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <form action="{{ route('election.update') }}" method="post">
+                                @csrf
+                                <div class="modal-header">
+                                    <h3 class="modal-title">Change/Set Time Election</h3>
+                    
+                                    <!--begin::Close-->
+                                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                                    </div>
+                                    <!--end::Close-->
+                                </div>
+                    
+                                <div class="modal-body">
+                                    <div class="row mb-0">
+                                        <div class="col-md-4 mb-5">
+                                            <label class="form-label">Status</label>
+                                            <select class="form-select" data-control="select2" data-placeholder="Select an option" name="status">
+                                                <option></option>
+                                                <option value="Y" {{ $election->status == 'Y' ? 'selected' : '' }}>Open</option>
+                                                <option value="N" {{ $election->status == 'N' ? 'selected' : '' }}>Closed</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <label class="form-label">Time Range (Start - End Time)</label>
+                                            <input class="form-control form-control-solid" placeholder="Pick date range" id="kt_daterangepicker_2" name="time"/>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal Change Time n Status Election-->
+
             </div>
             <!--end::Engage widget 6-->
         </div>
         <!--end::Col-->
     </div>
     <!--end::Row-->
+
    <!--begin::Row-->
    <div class="row g-5 gx-xl-10 mb-5 mb-xl-10">
     <!--begin::Col-->
@@ -195,7 +268,55 @@
 @endsection
 
 @section('plugins-last')
+<script>
+    $("#kt_daterangepicker_2").daterangepicker({
+        timePicker: true,
+        startDate: moment("{{ \Carbon\Carbon::parse($election->start_time)}}"),
+        endDate: moment("{{ \Carbon\Carbon::parse($election->end_time)}}"),
+        locale: {
+            format: "M/DD/YYYY hh:mm A" // Menggunakan format 12-hour AM/PM
+        }
+    });
+</script>
 
+<script>
+    $(document).ready(function() {
+        // Ketika tombol submit diklik di modal
+        $('#kt_modal_export_voters_form').submit(function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('election.update') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Data Updated',
+                            text: 'Election data has been updated successfully!',
+                        }).then(() => {
+                            // Tutup modal dan refresh halaman
+                            $('#kt_modal_export_voters').modal('hide');
+                            location.reload(); // Refresh halaman
+                        });
+                    }
+                },
+                error: function(response) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'There was an error updating the data.',
+                    });
+                }
+            });
+        });
+    });
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var options = {
