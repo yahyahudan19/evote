@@ -370,21 +370,41 @@
                                 </a>
                             </div>
                             <!--end::Avatar-->
+                            @php
+                                $email = $vot->email;
+                                $parts = explode('@', $email);
+                                if (count($parts) === 2) {
+                                    $name = $parts[0];
+                                    $domain = $parts[1];
+
+                                    $maskedName = substr($name, 0, 3) . str_repeat('*', max(0, strlen($name) - 3));
+
+                                    $domainParts = explode('.', $domain);
+                                    $domainMain = $domainParts[0];
+                                    $domainExt = implode('.', array_slice($domainParts, 1));
+
+                                    $maskedDomain = substr($domainMain, 0, 1) . str_repeat('*', max(0, strlen($domainMain) - 1));
+
+                                    $maskedEmail = $maskedName . '@' . $maskedDomain . '.' . $domainExt;
+                                } else {
+                                    $maskedEmail = $email;
+                                }
+                            @endphp
                             <!--begin::User details-->
                             <div class="d-flex flex-column">
                                 <a href="#" class="text-gray-800 text-hover-primary mb-1">{{$vot->name}}</a>
-                                <span>{{$vot->email}}</span>
+                                <span>{{$maskedEmail}}</span>
                             </div>
                             <!--begin::User details-->
                         </td>
-                        <td onclick="Swal.fire('Full ID Card Number', '{{ $vot->id_card_number }}', 'info')" style="cursor: pointer;">
+                        <td>
                             {{ substr($vot->id_card_number, 0, 3) . '***' }}
                         </td>
-                        <td onclick="Swal.fire('Full Phone Number', '{{ $vot->phone }}', 'info')" style="cursor: pointer;">
+                        <td>
                             <div class="badge badge-light fw-bold">{{ substr($vot->phone, 0, -4) . '****' }}</div>
                         </td>
                         <td>
-                            <div class="badge badge-light fw-bold" style="cursor: pointer;" onclick="Swal.fire('Full Code', '{{ $vot->code }}', 'info')">
+                            <div class="badge badge-light fw-bold">
                                 {{ substr($vot->code, 0, 2) . '****' }}
                             </div>
                         </td>

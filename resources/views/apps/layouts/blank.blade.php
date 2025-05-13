@@ -70,8 +70,8 @@
 								<!--end::Header mobile toggle-->
 								<!--begin::Logo image-->
 								<a href="#" class="me-5 me-lg-9">
-									<img alt="Logo" src="{{ asset('templates/assets/media/logos/demo53.svg')}}" class="h-25px h-lg-30px theme-light-show" />
-									<img alt="Logo" src="{{ asset('templates/assets/media/logos/demo53-dark.svg')}}" class="h-25px h-lg-30px theme-dark-show" />
+									<img alt="Logo" src="{{ asset('templates/assets/media/logos/logos.svg')}}" class="h-25px h-lg-30px theme-light-show" />
+									<img alt="Logo" src="{{ asset('templates/assets/media/logos/logos-dark.svg')}}" class="h-25px h-lg-30px theme-dark-show" />
 								</a>
 								<!--end::Logo image-->
 							</div>
