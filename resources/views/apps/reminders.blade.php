@@ -126,6 +126,19 @@
                                 <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
                                     <!--begin::Number-->
                                     <div class="d-flex align-items-center">
+                                        <div class="fs-2 fw-bold" data-kt-countup="true">∞</div>
+                                        
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-semibold fs-6 text-gray-500">Whatsapp Quota</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
                                         {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i> --}}
                                         <div class="fs-2 fw-bold" data-kt-countup="true"id="job-queue-count">{{ $jobQueueCount }}</div>
                                     </div>
