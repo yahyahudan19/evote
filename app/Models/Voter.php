@@ -18,5 +18,6 @@ class Voter extends Model
         'code',
         'status',
         'id_card_number',
+        'email_sent_at',
     ];
 }

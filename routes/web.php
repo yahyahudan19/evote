@@ -3,11 +3,17 @@
 use App\Http\Controllers\CandidatesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ElectionsController;
+use App\Http\Controllers\RemindersController;
 use App\Http\Controllers\VoterController;
+use App\Http\Controllers\VoterMailController;
+use App\Http\Controllers\VoterWhatsappController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VoterCodeMail;
+use App\Models\Voter;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,6 +48,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/election/status', [ElectionsController::class, 'showElectionStatus'])->name('election.status');
     Route::post('/election/update', [ElectionsController::class, 'updateElection'])->name('election.update');
+
+    Route::get('/email/voter/{id}', [VoterMailController::class, 'sendToSingle']);
+
+    Route::get('/whatsapp/voter/{id}', [VoterWhatsappController::class, 'sendToSingle']);
+    
+    Route::get('/reminders', [RemindersController::class, 'index'])->name('reminders.index');
+    
+    Route::get('/email/send-bulk', [VoterMailController::class, 'sendBulk']);
+    Route::get('/email/bulk-info', [VoterMailController::class, 'bulkInfo']);
+
+
 
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');

@@ -5,6 +5,11 @@
 @endsection
 
 
+@section('plugins-head')
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@endsection
 
 @section('content')
 <div id="kt_app_content" class="app-content">
@@ -240,21 +245,20 @@
         <div class="card card-flush overflow-hidden h-lg-100">
             <!--begin::Header-->
             <div class="card-header pt-5">
-                <!--begin::Title-->
                 <h3 class="card-title align-items-start flex-column">
                     <span class="card-label fw-bold text-gray-900">Vote Result</span>
                     <span class="text-gray-500 mt-1 fw-semibold fs-6">
                         {{ \Carbon\Carbon::now('Asia/Jakarta')->translatedFormat('d F Y, H:i') }}
                     </span>
                 </h3>
-                <!--end::Title-->
-                
             </div>
             <!--end::Header-->
             <!--begin::Card body-->
             <div class="card-body d-flex align-items-end p-0">
                 <!--begin::Chart-->
-                <div id="voteChart" class="min-h-auto w-100 ps-4 pe-6 mb-6" style="width: 100%; height: 400px;"></div>
+                <div class="w-100 d-flex justify-content-center align-items-center">
+                    <canvas id="voteChart" class="min-h-auto ps-2 pe-2 mb-4" style="width:480px; height:320px; max-width:480px; max-height:320px;"></canvas>
+                </div>
                 <!--end::Chart-->
             </div>
             <!--end::Card body-->
@@ -320,35 +324,46 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var options = {
-            chart: {
-                type: 'donut',
-                height: 400
+        // Data from backend
+        var labels = @json($labels);
+        var votes = @json($series->pluck('votes')->toArray());
+        var totalVotes = {{ $totalVoted }};
+        
+        // Calculate percentages
+        var percentages = votes.map(function(vote) {
+            return totalVotes > 0 ? (vote / totalVotes) * 100 : 0;
+        });
+
+        // Chart.js Configuration
+        var ctx = document.getElementById('voteChart').getContext('2d');
+        var voteChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: votes,
+                    backgroundColor: ['#3E97FF', '#F1416C', '#50CD89', '#FFC700', '#7239EA', '#00A3FF'],
+                    hoverOffset: 4,
+                }]
             },
-            series: @json($series->pluck('votes')->toArray()),  // Pass only the votes count
-            labels: @json($labels),
-            colors: ['#3E97FF', '#F1416C', '#50CD89', '#FFC700', '#7239EA', '#00A3FF'],
-            legend: {
-                position: 'bottom'
-            },
-            dataLabels: {
-                enabled: true,
-                formatter: function (val, opts) {
-                    const percentage = opts.w.config.series[opts.seriesIndex] / {{ $totalVoted }} * 100;
-                    return percentage.toFixed(2) + '%';  // Display percentage
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + " suara";  // Display the number of votes when hovered
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                var percentage = percentages[tooltipItem.dataIndex].toFixed(2);
+                                var votesCount = tooltipItem.raw;
+                                return 'Votes: ' + votesCount + ' (' + percentage + '%)';
+                            }
+                        }
                     }
                 }
             }
-        };
-
-        const chart = new ApexCharts(document.querySelector("#voteChart"), options);
-        chart.render();
+        });
     });
 </script>
 

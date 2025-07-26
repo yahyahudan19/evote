@@ -53,6 +53,21 @@
             <div class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                 <!--begin:Menu link-->
                 <span class="menu-link">
+                    <a href="/reminders" class="menu-title">
+                        <span class="menu-icon">
+                            <i class="ki-outline ki-send fs-3"></i>
+                        </span>
+                        Reminders
+                    </a>
+                </span>
+                <!--end:Menu link-->
+            </div>
+            <!--end:Menu item-->
+
+            <!--begin:Menu item-->
+            <div class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                <!--begin:Menu link-->
+                <span class="menu-link">
                     <a href="#" class="btn btn-flex btn-icon align-self-center fw-bold h-35px w-md-100 py-2 px-4" id="time_remaining_button">
                         <i class="ki-outline ki-timer fs-4"></i>
                         <span class="d-none d-md-inline ms-1 fs-7" id="time_remaining">Time Remaining: </span>

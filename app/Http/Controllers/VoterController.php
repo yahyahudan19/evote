@@ -9,6 +9,7 @@ use App\Models\Voter;
 use Illuminate\Http\Request;
 use App\Imports\VotersImport;
 use App\Models\Election;
+use App\Services\WhatsappService;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -36,22 +37,22 @@ class VoterController extends Controller
     {
         // Hitung jumlah input yang diberikan
         $matches = 0;
-        if ($request->filled('email')) $matches++;
+        // if ($request->filled('email')) $matches++;
         if ($request->filled('phone')) $matches++;
         if ($request->filled('code')) $matches++;
 
         if ($matches < 3) {
             return response()->json([
                 'status' => 'not_enough_data',
-                'message' => 'Minimal tiga data harus diisi.'
+                'message' => 'Minimal dua data harus diisi.'
             ]);
         }
 
         // Jalankan query pencocokan
         $voter = Voter::where(function ($query) use ($request) {
-            if ($request->filled('email')) {
-                $query->where('email', $request->email);
-            }
+            // if ($request->filled('email')) {
+            //     $query->where('email', $request->email);
+            // }
             if ($request->filled('phone')) {
                 $query->where('phone', $request->phone);
             }
@@ -105,13 +106,32 @@ class VoterController extends Controller
         $voter = Voter::find($voter_id);
 
         if ($voter && $voter->status == 'not_voted') {
+            // Simpan vote
             Vote::create([
-                'voter_id' => $voter->id,
+                'voter_id'     => $voter->id,
                 'candidate_id' => $request->candidate_id,
-                'voted_at' => now(),
+                'voted_at'     => now(),
             ]);
-            
+
+            // Update status voter
             $voter->update(['status' => 'voted']);
+
+            // Kirim pesan WA setelah vote
+            $message = "Yth. {$voter->name}\n\n" .
+                "Salam sehat dan harmonis,\n\n" .
+                "Terima kasih telah menggunakan hak suara Anda dalam Pemira ILUNI FKM UI 2025–2028.\n\n" .
+                "Dengan hormat, berikut kami lampirkan data partisipasi Bapak/Ibu dalam proses pemungutan suara:\n" .
+                "• Nama Lengkap : {$voter->name}\n" .
+                "• Email Aktif : {$voter->email}\n" .
+                "• Nomor Kontak : {$voter->phone}\n\n" .
+                "Kami sangat menghargai kontribusi Bapak/Ibu dalam mewujudkan ILUNI FKM UI yang harmonis, demokratis, dan berintegritas.\n\n" .
+                "Salam hormat,\n" .
+                "Panitia Pemira dan MUBES ILUNI FKM UI 2025–2028\n\n" .
+                "📧 xx@gmail.com\n" .
+                "📱 wa.me/xxx";
+
+            // Kirim ke WhatsApp
+            app(WhatsappService::class)->sendFromVoter($voter, $voter->phone, $message);
 
             return response()->json(['status' => 'success']);
         }
