@@ -1,7 +1,7 @@
 @extends('apps.layouts.app')
 
 @section('title')
-    Reminders Management
+    Reminders
 @endsection
 
 @section('plugins-head')
@@ -16,14 +16,14 @@
         <!--begin::Toolbar container-->
         <div class="app-toolbar-container d-flex flex-column flex-row-fluid">
             <!--begin::Page title-->
-            <div class="page-title gap-4 me-3 mb-3 mb-lg-5">
+            <div class="page-title gap-4 me-3 mb-0 mb-lg-5">
                 <!--begin::Title-->
                 <h1 class="text-gray-900 fw-bolder m-0">Reminders Management</h1>
                 <!--end::Title-->
             </div>
             <!--end::Page title-->
             
-            <!--begin::Toolbar wrapper=-->
+            {{-- <!--begin::Toolbar wrapper=-->
             <div class="d-flex justify-content-between flex-wrap gap-4 gap-lg-10">
                 <!--begin::Toolbar menu-->
                 <div class="app-toolbar-menu menu menu-title-gray-800 menu-state-primary flex-wrap fs-5 fw-semibold w-100">
@@ -37,7 +37,7 @@
                 </div>
                 <!--begin::Toolbar menu-->
             </div>
-            <!--end::Toolbar wrapper=-->
+            <!--end::Toolbar wrapper=--> --}}
         </div>
         <!--end::Toolbar container=-->
     </div>
@@ -47,120 +47,140 @@
 
 @section('content')
 <div id="kt_app_content" class="app-content">
-    <!--begin::Card-->
-    <div class="card">
-        <!--begin::Card header-->
-        <div class="card-header border-0 pt-6">
-            <!--begin::Card title-->
-            <div class="card-title">
-                <!--begin::Search-->
-                <div class="d-flex align-items-center position-relative my-1">
-                    <i class="ki-outline ki-magnifier fs-3 position-absolute ms-5"></i>
-                    <input type="text" data-kt-user-table-filter="search" class="form-control form-control-solid w-250px ps-13" placeholder="Search user" />
-                </div>
-                <!--end::Search-->
-            </div>
-            <!--begin::Card title-->
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Toolbar-->
-                <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
-                     <!--begin::Delete All Voters-->
-                    <button type="button" class="btn btn-danger me-3" id="delete_all_voters_button">
-                        <i class="ki-outline ki-trash-square fs-2"></i>Clear Data
-                    </button>
-                    <!--end::Delete All Voters-->
-                    <!--begin::Filter-->
-                    <button type="button" class="btn btn-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <i class="ki-outline ki-filter fs-2"></i>Filter</button>
-                    <!--begin::Menu 1-->
-                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
-                        <!--begin::Header-->
-                        <div class="px-7 py-5">
-                            <div class="fs-5 text-gray-900 fw-bold">Filter Options</div>
-                        </div>
-                        <!--end::Header-->
-                        <!--begin::Separator-->
-                        <div class="separator border-gray-200"></div>
-                        <!--end::Separator-->
-                        <!--begin::Content-->
-                        <div class="px-7 py-5" data-kt-user-table-filter="form">
-                            <!--begin::Input group-->
-                            <div class="mb-10">
-                                <label class="form-label fs-6 fw-semibold">Status Voting :</label>
-                                <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-user-table-filter="role" data-hide-search="true">
-                                    <option></option>
-                                    <option value="Sudah Voting">Sudah Voting</option>
-                                    <option value="Belum Voting">Belum Voting</option>
-                                </select>
+    <!--begin::Navbar-->
+    <div class="card mb-5 mb-xl-10">
+        <div class="card-body pt-9 pb-0">
+            <!--begin::Details-->
+            <div class="d-flex flex-wrap flex-sm-nowrap">
+                <!--begin::Info-->
+                <div class="flex-grow-1">
+                    <!--begin::Title-->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
+                        <!--begin::User-->
+                        <div class="d-flex flex-column">
+                            <!--begin::Name-->
+                            <div class="d-flex align-items-center mb-2">
+                                <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">Election Reminders Summary</a>
+                                <a href="#">
+                                    <i class="ki-outline ki-send fs-1 text-primary"></i>
+                                </a>
                             </div>
-                            <!--end::Input group-->
-                           
-                            <!--begin::Actions-->
-                            <div class="d-flex justify-content-end">
-                                <button type="reset" class="btn btn-light btn-active-light-primary fw-semibold me-2 px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="reset">Reset</button>
-                                <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
+                            <!--end::Name-->
+                            <!--begin::Info-->
+                            <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
+                                <a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                <i class="ki-outline ki-profile-circle fs-4 me-1"></i>{{ $voterCount }} Voters Registered</a>
+                                <a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary me-5 mb-2">
+                                <i class="ki-outline ki-geolocation fs-4 me-1"></i>Online Vote</a>
+                                <a href="#" class="d-flex align-items-center text-gray-500 text-hover-primary mb-2">
+                                <i class="ki-outline ki-sms fs-4"></i>app@ynemedia.biz.id</a>
                             </div>
-                            <!--end::Actions-->
+                            <!--end::Info-->
                         </div>
-                        <!--end::Content-->
+                        <!--end::User-->
+                        <!--begin::Actions-->
+                        <div class="d-flex my-4">
+                            <button type="button" class="btn btn-danger btn-sm me-3" id="clear_data_email_sent">
+                                <i class="ki-outline ki-trash-square fs-2"></i>Clear Data
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm me-3" id="send-whatsapp">
+                                <i class="ki-outline ki-whatsapp fs-2"></i>Send Whatsapp Reminder</button>
+                            <button type="button" class="btn btn-warning btn-sm me-3" id="send-bulk-email">
+                                <i class="ki-outline ki-send fs-2"></i>Send Email Code</button>
+                        </div>
+                        <!--end::Actions-->
                     </div>
-                    <!--end::Menu 1-->
-                    <!--end::Filter-->
-                    <!--begin::Export-->
-                    <button type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_export_users">
-                        <i class="ki-outline ki-whatsapp fs-2"></i>Whatsapp</button>
-                    <!--begin::Export-->
-                    <button type="button" class="btn btn-warning me-3" id="send-bulk-email">
-                        <i class="ki-outline ki-send fs-2"></i>Email</button>
-                    <!--end::Export-->
-                   
-                    {{-- <!--begin::Add user-->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_user">
-                    <i class="ki-outline ki-plus fs-2"></i>Add Voters</button>
-                    <!--end::Add user--> --}}
-                </div>
-                <!--end::Toolbar-->
-                <!--begin::Group actions-->
-                <div class="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
-                    <div class="fw-bold me-5">
-                    <span class="me-2" data-kt-user-table-select="selected_count"></span>Selected</div>
-                    <button type="button" class="btn btn-danger" data-kt-user-table-select="delete_selected">Delete Selected</button>
-                </div>
-                <!--end::Group actions-->
-            </div>
-            <!--end::Card toolbar-->
-        </div>
-        <!--end::Card header-->
-        <!--begin::Card body-->
-        <div class="card-body py-4">
-            <!--begin::Table-->
-            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-                <thead>
-                    <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                        <th class="w-10px pe-2">
-                            <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
+                    <!--end::Title-->
+                    <!--begin::Stats-->
+                    <div class="d-flex flex-wrap flex-stack">
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-column flex-grow-1 pe-8">
+                            <!--begin::Stats-->
+                            <div class="d-flex flex-wrap">
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
+                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i> --}}
+                                        <div class="fs-2 fw-bold" data-kt-countup="true">{{ $votersMailSentCount }}</div>
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-semibold fs-6 text-gray-500">Email Sent</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3" id="email-quota-container">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
+                                        <div class="fs-2 fw-bold" id="email-quota-count" data-kt-countup="true">0</div>
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-semibold fs-6 text-gray-500">Email Quota</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
+                                <!--begin::Stat-->
+                                <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                    <!--begin::Number-->
+                                    <div class="d-flex align-items-center">
+                                        {{-- <i class="ki-outline ki-arrow-up fs-3 text-success me-2"></i> --}}
+                                        <div class="fs-2 fw-bold" data-kt-countup="true"id="job-queue-count">{{ $jobQueueCount }}</div>
+                                    </div>
+                                    <!--end::Number-->
+                                    <!--begin::Label-->
+                                    <div class="fw-semibold fs-6 text-gray-500">Job Queue</div>
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Stat-->
                             </div>
-                        </th>
-                        <th class="min-w-125px">Name</th>
-                        <th class="min-w-125px">ID Number</th>
-                        <th class="min-w-125px">Phone</th>
-                        <th class="min-w-125px">Code</th>
-                        <th class="min-w-125px">Status</th>
-                        <th class="min-w-125px">Email</th>
-                        <th class="text-end min-w-100px">Actions</th>
+                            <!--end::Stats-->
+                        </div>
+                        <!--end::Wrapper-->
+                        <!--begin::Progress-->
+                        <div class="d-flex align-items-center w-200px w-sm-300px flex-column mt-3">
+                            <div class="d-flex justify-content-between w-100 mt-auto mb-2">
+                                <span class="fw-semibold fs-6 text-gray-500">Queue Progress</span>
+                                <span class="fw-bold fs-6" id="queue-progress-text">0%</span>
+                            </div>
+                            <div class="h-5px mx-3 w-100 bg-light mb-3">
+                                <div class="bg-success rounded h-5px"
+                                    id="queue-progress-bar" 
+                                    role="progressbar" 
+                                    style="width: 100%;" 
+                                    aria-valuenow="50" 
+                                    aria-valuemin="0" 
+                                    aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Progress-->
+                    </div>
+                    <!--end::Stats-->
+                </div>
+                <!--end::Info-->
+            </div>
+            <!--end::Details-->
+        </div>
+    </div>
+    <div class="card mb-5 mb-xl-10">
+        <div class="card-body pt-9 pb-0">
+            <table class="table table-striped" id="job-queue-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Queue</th>
+                        <th>Attempts</th>
+                        <th>Available At</th>
+                        <th>Created At</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-600 fw-semibold">
-                    
-                </tbody>
+                <tbody></tbody>
             </table>
-            <!--end::Table-->
         </div>
-        <!--end::Card body-->
     </div>
-    <!--end::Card-->
 </div>
 
 @endsection
@@ -171,80 +191,263 @@
 <!--end::Vendors Javascript-->
 <!--begin::Custom Javascript(used for this page only)-->
 <script src="{{ asset('templates/assets/js/custom/evote/votersjs/table.js')}}"></script>
-<script src="{{ asset('templates/assets/js/custom/evote/votersjs/add.js')}}"></script>
-
 <script>
-document.querySelector('#send-bulk-email').addEventListener('click', function (e) {
-    e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function () {
+        function fetchEmailQuota() {
+            fetch('/email/bulk-info')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status) {
+                        document.getElementById('email-quota-count').textContent = data.remaining_quota;
+                    }
+                })
+                .catch(err => console.error('Error fetching email quota:', err));
+        }
 
-    // Ambil info jumlah peserta
-    fetch('/email/bulk-info')
-        .then(res => res.json())
-        .then(data => {
-            if (!data.status || data.target === 0) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Tidak Ada Email',
-                    text: 'Tidak ada voter yang akan dikirimkan email hari ini (quota habis atau semua sudah terkirim).'
-                });
-                return;
-            }
+        // Fetch email quota initially
+        fetchEmailQuota();
 
-            Swal.fire({
-                title: 'Kirim Email Massal?',
-                html: `Akan mengirim email ke <b>${data.target}</b> peserta.<br>
-                       Sisa quota hari ini: <b>${data.sisa_quota}</b>`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Kirim!',
-                cancelButtonText: 'Batal',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
+        // Set interval to auto-reload every 5 seconds
+        setInterval(fetchEmailQuota, 5000);
+    });
+</script>
+<!-- Send Bulk Email -->
+<script>
+    document.querySelector('#send-bulk-email').addEventListener('click', function (e) {
+        e.preventDefault();
 
+        // Fetch bulk email info
+        fetch('/email/bulk-info')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.status || data.target === 0) {
                     Swal.fire({
-                        title: 'Mengirim Email...',
-                        text: 'Mohon tunggu, proses ini akan berjalan di background.',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
+                        icon: 'info',
+                        title: 'No Emails',
+                        text: 'No voters will receive emails today (quota exhausted or all emails already sent).'
                     });
+                    return;
+                }
 
-                    fetch('/email/send-bulk')
-                        .then(response => response.json())
-                        .then(resp => {
-                            Swal.close();
-                            if (resp.status) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: resp.message
-                                }).then(() => {
-                                    window.location.reload();
-                                });
-                            } else {
+                Swal.fire({
+                    title: 'Send Bulk Email?',
+                    html: `This will send emails to <b>${data.target}</b> participants.<br>
+                        Remaining quota for today: <b>${data.remaining_quota}</b>`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Send!',
+                    cancelButtonText: 'Cancel',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        Swal.fire({
+                            title: 'Sending Emails...',
+                            text: 'Please wait, this process will run in the background.',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        fetch('/email/send-bulk')
+                            .then(response => response.json())
+                            .then(resp => {
+                                Swal.close();
+                                if (resp.status) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: resp.message
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Failed!',
+                                        text: resp.message
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                Swal.close();
+                                console.error(err);
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Gagal!',
-                                    text: resp.message
+                                    title: 'Error',
+                                    text: 'Unable to process the request.'
                                 });
-                            }
-                        })
-                        .catch(err => {
-                            Swal.close();
-                            console.error(err);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Kesalahan',
-                                text: 'Tidak dapat memproses permintaan.'
                             });
-                        });
-                }
+                    }
+                });
             });
+    });
+</script>
+<!-- Clear Email Sent Data -->
+<script>
+    document.getElementById('clear_data_email_sent').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "All email sent data for voters will be deleted!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('email.clearEmailSent') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire(
+                                'Success!',
+                                'Email sent data has been deleted.',
+                                'success'
+                            ).then(() => {
+                                location.reload(); // refresh the page
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error', 'An error occurred', 'error');
+                    }
+                });
+            }
         });
-});
+    });
+</script>
+<!-- Send WhatsApp Reminder -->
+<script>
+    document.getElementById('send-whatsapp').addEventListener('click', function () {
+
+        let diff = @json($diff);
+        // Determine options based on diff
+        let options = {};
+        if (diff === 3) {
+            options = { 'h-3': 'Reminder H-3' };
+        } else if (diff === 1) {
+            options = { 'h-1': 'Reminder H-1' };
+        } else if (diff === 0) {
+            options = { 'hari-h': 'Reminder Day-H' };
+        }
+
+        // "Not Voted Yet" is always available
+        options['belum-vote'] = 'Reminder Not Voted Yet';
+
+        let selectOptions = Object.entries(options).map(([value, label]) => `<option value="${value}">${label}</option>`).join('');
+
+        Swal.fire({
+            title: 'Send WhatsApp Reminder',
+            html: `
+                <select id="reminder-select" class="swal2-select">
+                    ${selectOptions}
+                </select>
+            `,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Send',
+            preConfirm: () => {
+                const selected = document.getElementById('reminder-select').value;
+                if (!selected) {
+                    Swal.showValidationMessage('Please select a reminder!');
+                }
+                return selected;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let selected = result.value;
+
+                // Send request to the server
+                fetch(`/whatsapp/bulk?type=${selected}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(res => res.json())
+                .then(data => {
+                    Swal.fire('Success', data.message || 'Message sent!', 'success').then(() => {
+                        location.reload(); // Reload the page
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    Swal.fire('Error', `An error occurred: ${err.message || 'Unknown'}`, 'error');
+                });
+            }
+        });
+    });
+</script>
+<!-- Job Queue Table -->
+<script>
+    $(document).ready(function() {
+        let table = $('#job-queue-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('jobs.datatables') }}",
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'queue', name: 'queue' },
+                { data: 'attempts', name: 'attempts' },
+                { data: 'available_at', render: function(data){
+                    return new Date(data * 1000).toLocaleString();
+                }},
+                { data: 'created_at', render: function(data){
+                    return new Date(data * 1000).toLocaleString();
+                }},
+            ],
+            pageLength: 10
+        });
+
+        // Refresh otomatis tiap 5 detik
+        setInterval(function() {
+            table.ajax.reload(null, false); // false supaya tidak reset pagination
+            // Update count juga
+            fetch("{{ route('jobs.count') }}")
+                .then(r => r.text())
+                .then(count => document.getElementById('job-queue-count').textContent = count);
+        }, 5000);
+    });
+</script>
+<!-- Update Queue Progress -->
+<script>
+    let totalJobs = {{ $jobQueueCount }};
+        function updateProgress() {
+            fetch("{{ route('jobs.count') }}")
+                .then(r => r.text())
+                .then(count => {
+                    let remaining = parseInt(count);
+                    let progress = 0;
+
+                    if (totalJobs > 0) {
+                        progress = ((totalJobs - remaining) / totalJobs) * 100;
+                        if (remaining <= 0) {
+                            progress = 100;
+                        }
+                    } else {
+                        // jika awalnya tidak ada job
+                        progress = 100;
+                    }
+
+                    progress = Math.round(progress);
+
+                    // update text dan bar
+                    document.getElementById('queue-progress-text').textContent = progress + '%';
+                    let bar = document.getElementById('queue-progress-bar');
+                    bar.style.width = progress + '%';
+                    bar.setAttribute('aria-valuenow', progress);
+                });
+        }
+        setInterval(updateProgress, 5000);
+        updateProgress();
 </script>
 
 

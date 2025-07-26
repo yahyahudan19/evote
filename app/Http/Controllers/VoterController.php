@@ -41,7 +41,7 @@ class VoterController extends Controller
         if ($request->filled('phone')) $matches++;
         if ($request->filled('code')) $matches++;
 
-        if ($matches < 3) {
+        if ($matches < 2) {
             return response()->json([
                 'status' => 'not_enough_data',
                 'message' => 'Minimal dua data harus diisi.'
@@ -117,18 +117,31 @@ class VoterController extends Controller
             $voter->update(['status' => 'voted']);
 
             // Kirim pesan WA setelah vote
-            $message = "Yth. {$voter->name}\n\n" .
-                "Salam sehat dan harmonis,\n\n" .
-                "Terima kasih telah menggunakan hak suara Anda dalam Pemira ILUNI FKM UI 2025–2028.\n\n" .
-                "Dengan hormat, berikut kami lampirkan data partisipasi Bapak/Ibu dalam proses pemungutan suara:\n" .
-                "• Nama Lengkap : {$voter->name}\n" .
-                "• Email Aktif : {$voter->email}\n" .
-                "• Nomor Kontak : {$voter->phone}\n\n" .
-                "Kami sangat menghargai kontribusi Bapak/Ibu dalam mewujudkan ILUNI FKM UI yang harmonis, demokratis, dan berintegritas.\n\n" .
-                "Salam hormat,\n" .
-                "Panitia Pemira dan MUBES ILUNI FKM UI 2025–2028\n\n" .
-                "📧 xx@gmail.com\n" .
-                "📱 wa.me/xxx";
+            $message = "Dear {$voter->name},\n\n" .
+                "Greetings,\n\n" .
+                "We sincerely thank you for participating in the ILUNI FKM UI 2025–2028 election. Your involvement reflects a strong commitment to upholding democracy and the integrity of our organization.\n\n" .
+                "Below are the details of your participation in the voting process:\n\n" .
+                "• Full Name   : {$voter->name}\n" .
+                "• Active Email: {$voter->email}\n" .
+                "• Contact No. : {$voter->phone}\n\n" .
+                "Your contribution is highly valued in fostering a harmonious, democratic, and integrity-driven ILUNI FKM UI. We hope this step will lead to meaningful progress for our collective future.\n\n" .
+                "Kind regards,\n\n" .
+                "The Committee of ILUNI FKM UI 2025–2028 Election and General Assembly\n\n" .
+                "📧 Email: xx@gmail.com\n" .
+                "📱 WhatsApp: wa.me/xxx";
+
+            // $message = "Yth. {$voter->name},\n\n" .
+            //     "Salam sehat dan harmonis,\n\n" .
+            //     "Terima kasih telah menggunakan hak suara Anda dalam Pemira ILUNI FKM UI 2025–2028. Partisipasi Anda adalah wujud nyata dari komitmen terhadap demokrasi dan integritas organisasi kita.\n\n" .
+            //     "Berikut adalah data partisipasi Anda dalam proses pemungutan suara:\n\n" .
+            //     "• Nama Lengkap : {$voter->name}\n" .
+            //     "• Email Aktif  : {$voter->email}\n" .
+            //     "• Nomor Kontak : {$voter->phone}\n\n" .
+            //     "Kami sangat menghargai kontribusi Anda dalam mewujudkan ILUNI FKM UI yang harmonis, demokratis, dan berintegritas. Semoga langkah kecil ini membawa dampak besar bagi kemajuan bersama.\n\n" .
+            //     "Salam hormat,\n\n" .
+            //     "Panitia Pemira dan MUBES ILUNI FKM UI 2025–2028\n\n" .
+            //     "📧 Email: xx@gmail.com\n" .
+            //     "📱 WhatsApp: wa.me/xxx";
 
             // Kirim ke WhatsApp
             app(WhatsappService::class)->sendFromVoter($voter, $voter->phone, $message);

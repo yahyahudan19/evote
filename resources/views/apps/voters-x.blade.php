@@ -555,19 +555,19 @@
             const url = this.getAttribute('href');
 
             Swal.fire({
-                title: 'Kirim Email?',
-                text: "Apakah Anda yakin ingin mengirim email ke pemilih ini?",
+                title: 'Send Email?',
+                text: "Are you sure you want to send an email to this voter?",
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, Kirim!',
-                cancelButtonText: 'Batal',
+                confirmButtonText: 'Yes, Send!',
+                cancelButtonText: 'Cancel',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Tampilkan modal loading
+                    // Show loading modal
                     Swal.fire({
-                        title: 'Mengirim Email...',
-                        text: 'Mohon tunggu sebentar',
+                        title: 'Sending Email...',
+                        text: 'Please wait a moment',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         didOpen: () => {
@@ -584,12 +584,12 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        Swal.close(); // Tutup loader
+                        Swal.close(); // Close loader
 
                         if (data.status) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil!',
+                                title: 'Success!',
                                 text: data.message,
                             }).then(() => {
                                 window.location.reload();
@@ -597,18 +597,18 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Gagal!',
+                                title: 'Failed!',
                                 text: data.message,
                             });
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        Swal.close(); // Tutup loader
+                        Swal.close(); // Close loader
                         Swal.fire({
                             icon: 'error',
-                            title: 'Terjadi Kesalahan!',
-                            text: 'Tidak dapat mengirim email.',
+                            title: 'An Error Occurred!',
+                            text: 'Unable to send email.',
                         });
                     });
                 }
@@ -625,19 +625,19 @@
             const url = this.getAttribute('href');
 
             Swal.fire({
-                title: 'Kirim Whatsapp?',
-                text: "Apakah Anda yakin ingin mengirim Whatsapp ke pemilih ini?",
+                title: 'Send Whatsapp?',
+                text: "Are you sure you want to send a Whatsapp message to this voter?",
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, Kirim!',
-                cancelButtonText: 'Batal',
+                confirmButtonText: 'Yes, Send!',
+                cancelButtonText: 'Cancel',
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Tampilkan modal loading
+                    // Show loading modal
                     Swal.fire({
-                        title: 'Mengirim Whatsapp...',
-                        text: 'Mohon tunggu sebentar',
+                        title: 'Sending Whatsapp...',
+                        text: 'Please wait a moment',
                         allowOutsideClick: false,
                         allowEscapeKey: false,
                         didOpen: () => {
@@ -654,12 +654,12 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        Swal.close(); // Tutup loader
+                        Swal.close(); // Close loader
 
                         if (data.status) {
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Berhasil!',
+                                title: 'Success!',
                                 text: data.message,
                             }).then(() => {
                                 window.location.reload();
@@ -667,18 +667,18 @@
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Gagal!',
+                                title: 'Failed!',
                                 text: data.message,
                             });
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        Swal.close(); // Tutup loader
+                        Swal.close(); // Close loader
                         Swal.fire({
                             icon: 'error',
-                            title: 'Terjadi Kesalahan!',
-                            text: 'Tidak dapat mengirim email.',
+                            title: 'An Error Occurred!',
+                            text: 'Unable to send Whatsapp message.',
                         });
                     });
                 }

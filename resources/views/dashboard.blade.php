@@ -106,6 +106,9 @@
                                 $electionStatus = 'Election Not Started';
                             }
                         @endphp
+                        @if($election->status === 'N')
+                        <a href="#" class="btn btn-info btn-outline fw-semibold" style="border: 1px solid rgba(255, 255, 255, 0.3)">Date Election : {{ \Carbon\Carbon::parse($election->start_time)->translatedFormat('d F Y \P\u\k\u\l H:i') }}</a>
+                        @endif
                         <a href="#" class="btn btn-color-white bg-transparent btn-outline fw-semibold" style="border: 1px solid rgba(255, 255, 255, 0.3)">Status : {{ $electionStatus }}</a>
                     </div>
                     <!--begin::Action-->
@@ -272,6 +275,11 @@
 @endsection
 
 @section('plugins-last')
+{{-- <script>
+    setTimeout(function() {
+        location.reload();
+    }, 3000); // 3000 milliseconds = 3 seconds
+</script> --}}
 <script>
     $("#kt_daterangepicker_2").daterangepicker({
         timePicker: true,

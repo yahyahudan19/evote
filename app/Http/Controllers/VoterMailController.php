@@ -16,7 +16,7 @@ class VoterMailController extends Controller
         if (!$voter->email) {
             return response()->json([
                 'status' => false,
-                'message' => 'Voter tidak memiliki email.'
+                'message' => 'Voter does not have an email address.'
             ], 400);
         }
 
@@ -28,13 +28,13 @@ class VoterMailController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => "Email berhasil dikirim ke {$voter->email}"
+                'message' => "Email successfully sent to {$voter->email}"
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Gagal mengirim email: ' . $e->getMessage()
+                'message' => 'Failed to send email: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -43,53 +43,61 @@ class VoterMailController extends Controller
         $query = Voter::whereNull('email_sent_at')
             ->whereNotNull('email');
 
-        $totalHariIni = Voter::whereDate('email_sent_at', now()->toDateString())->count();
+        $totalToday = Voter::whereDate('email_sent_at', now()->toDateString())->count();
 
-        $limitHarian = 300;
-        $sisaQuota = max(0, $limitHarian - $totalHariIni);
+        $dailyLimit = 300;
+        $remainingQuota = max(0, $dailyLimit - $totalToday);
 
-        if ($sisaQuota <= 0) {
+        if ($remainingQuota <= 0) {
             return response()->json([
                 'status' => false,
-                'message' => 'Quota pengiriman email hari ini sudah habis.'
+                'message' => 'Daily email sending quota has been exhausted.'
             ], 429);
         }
 
-        $voters = $query->limit($sisaQuota)->get();
+        $voters = $query->limit($remainingQuota)->get();
 
-        // Delay awal
+        // Initial delay
         $delay = 0;
 
         foreach ($voters as $voter) {
-            // Tambahkan delay 10 detik per job
+            // Add a 10-second delay per job
             SendVoterEmailJob::dispatch($voter)->delay(now()->addSeconds($delay));
             $delay += 10;
         }
 
         return response()->json([
             'status' => true,
-            'message' => "Job pengiriman email untuk {$voters->count()} voter sudah dimasukkan ke queue (10 detik jeda antar email)."
+            'message' => "Email sending jobs for {$voters->count()} voters have been queued (10 seconds delay between emails)."
         ]);
     }
     
     public function bulkInfo()
     {
-        $limitHarian = 300;
+        $dailyLimit = 300;
 
-        $totalHariIni = Voter::whereDate('email_sent_at', now()->toDateString())->count();
-        $sisaQuota = max(0, $limitHarian - $totalHariIni);
+        $totalToday = Voter::whereDate('email_sent_at', now()->toDateString())->count();
+        $remainingQuota = max(0, $dailyLimit - $totalToday);
 
         $countTarget = Voter::whereNull('email_sent_at')
             ->whereNotNull('email')
-            ->limit($sisaQuota)
+            ->limit($remainingQuota)
             ->count();
 
         return response()->json([
             'status' => true,
-            'sisa_quota' => $sisaQuota,
+            'remaining_quota' => $remainingQuota,
             'target' => $countTarget
         ]);
     }
+
+    public function clearEmailSent()
+    {
+        Voter::query()->update(['email_sent_at' => null]);
+
+        return response()->json(['status' => 'success']);
+    }
+
 
 }
 

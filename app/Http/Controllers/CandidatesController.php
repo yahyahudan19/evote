@@ -19,9 +19,6 @@ class CandidatesController extends Controller
         $election = Election::first(); // Ambil election pertama (jika ada)
         return view('apps.candidate', compact('canditates','election'));
     }
-
-
-
     public function store(Request $request)
     {
         // Validasi input

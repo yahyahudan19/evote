@@ -19,5 +19,13 @@ class Voter extends Model
         'status',
         'id_card_number',
         'email_sent_at',
+        'vote_start_time',
+        'vote_end_time',
     ];
+
+    public function votes()
+    {
+        return $this->hasOne(Vote::class);
+    }
+
 }

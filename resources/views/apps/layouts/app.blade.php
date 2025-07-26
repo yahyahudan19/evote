@@ -2,7 +2,7 @@
 <html lang="is">
 	<!--begin::Head-->
 	<head>
-		<title>@yield('title') | E-Voting v1.0</title>
+		<title>@yield('title') | E-Voting v1.5</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="E-Vote is a modern and secure voting application designed to simplify the voting process with advanced features and user-friendly interfaces." />
 		<meta name="keywords" content="e-vote, voting application, secure voting, online voting, election software, digital voting, voting system, e-voting platform" />
@@ -10,7 +10,7 @@
 		<meta property="og:locale" content="id_ID" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="E-Vote - Simplifying the Voting Process" />
-		<meta property="og:url" content="https://e-vote.edycorp.id" />
+		<meta property="og:url" content="https://e-vote.ynemedia.biz.id/" />
 		<meta property="og:site_name" content="E-Vote by Edy Corporation" />
 		<link rel="shortcut icon" href="{{ asset('templates/assets/media/logos/favicon.ico')}}" />
 		<!--begin::Fonts(mandatory for all pages)-->
@@ -120,19 +120,19 @@
 								<!--begin::Copyright-->
 								<div class="text-gray-900 order-2 order-md-1">
 									<span class="text-muted fw-semibold me-1">{{ date('Y') }}&copy;</span>
-									<a href="https://edycorp.id" target="_blank" class="text-gray-800 text-hover-primary">Edy Software House Corporation.</a>
+									<a href="https://ynemedia.biz.id" target="_blank" class="text-gray-800 text-hover-primary">Edy Software House Corporation.</a>
 								</div>
 								<!--end::Copyright-->
 								<!--begin::Menu-->
 								<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
 									<li class="menu-item">
-										<a href="https://edycorp.id" target="_blank" class="menu-link px-2">About</a>
+										<a href="https://ynemedia.biz.id" target="_blank" class="menu-link px-2">About</a>
 									</li>
 									<li class="menu-item">
-										<a href="https://dev.edycorp.id" target="_blank" class="menu-link px-2">Support</a>
+										<a href="https://dev.ynemedia.biz.id" target="_blank" class="menu-link px-2">Support</a>
 									</li>
 									<li class="menu-item">
-										<a href="https://market.edycorp.id" target="_blank" class="menu-link px-2">Purchase</a>
+										<a href="https://market.ynemedia.biz.id" target="_blank" class="menu-link px-2">Purchase</a>
 									</li>
 								</ul>
 								<!--end::Menu-->

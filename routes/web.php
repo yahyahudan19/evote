@@ -50,13 +50,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/election/update', [ElectionsController::class, 'updateElection'])->name('election.update');
 
     Route::get('/email/voter/{id}', [VoterMailController::class, 'sendToSingle']);
-
-    Route::get('/whatsapp/voter/{id}', [VoterWhatsappController::class, 'sendToSingle']);
     
     Route::get('/reminders', [RemindersController::class, 'index'])->name('reminders.index');
+
+    Route::get('/whatsapp/voter/{id}', [VoterWhatsappController::class, 'sendToSingle']);
+    Route::post('/whatsapp/bulk', [VoterWhatsappController::class, 'sendBulkReminder']);
     
+
     Route::get('/email/send-bulk', [VoterMailController::class, 'sendBulk']);
     Route::get('/email/bulk-info', [VoterMailController::class, 'bulkInfo']);
+    Route::post('/email/clear-email-sent', [VoterMailController::class, 'clearEmailSent'])->name('email.clearEmailSent');
+
+    Route::get('/jobs/count', function () {
+        return \DB::table('jobs')->count();
+    })->name('jobs.count');
+    Route::get('/jobs/datatables', [RemindersController::class, 'datatable'])
+    ->name('jobs.datatables');
 
 
 

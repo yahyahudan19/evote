@@ -186,14 +186,14 @@
                     </div>
             
                     <div class="modal-body">
-                        <div class="mb-5">
+                        {{-- <div class="mb-5">
                             <label class="required form-label">Full Name</label>
                             <input type="text" class="form-control form-control-solid" placeholder="Name" name="name" id="name" required/>
-                        </div>
-                        <div class="mb-5">
+                        </div> --}}
+                        {{-- <div class="mb-5">
                             <label class="required form-label">Email</label>
                             <input type="email" class="form-control form-control-solid" placeholder="email@mail.com" name="email" id="email" required/>
-                        </div>
+                        </div> --}}
                         
                         <div class="mb-5">
                             <label class="required form-label">Phone Number</label>
@@ -280,28 +280,27 @@
 </script>
 
 <script>
-    // Tombol verify di modal verify
+    // Verify button in the verify modal
     var verifyButton = document.querySelector("#kt_button_verify");
 
     verifyButton.addEventListener("click", function() {
-        // Ambil data input
-        var email = document.querySelector("[name='email']").value;
+        // Get input data
         var phone = document.querySelector("[name='phone']").value;
         var code = document.querySelector("[name='code']").value;
 
-        // Validasi input kosong
-        if (!email || !phone || !code) {
+        // Validate empty input
+        if (!phone || !code) {
             Swal.fire({
                 icon: 'error',
-                title: 'Data Tidak Lengkap!',
-                text: 'Pastikan semua data telah diisi.',
+                title: 'Incomplete Data!',
+                text: 'Please make sure all fields are filled.',
             });
             return;
         }
 
         verifyButton.setAttribute("data-kt-indicator", "on");
 
-        // Kirim AJAX untuk verifikasi voter
+        // Send AJAX request to verify voter
         fetch("{{ route('voter.verify') }}", {
             method: "POST",
             headers: {
@@ -309,7 +308,6 @@
                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
             },
             body: JSON.stringify({
-                email: email,
                 phone: phone,
                 code: code
             })
@@ -321,8 +319,8 @@
             if (data.status === "found") {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Data Ditemukan!',
-                    text: 'Silakan lanjut memilih kandidat.',
+                    title: 'Data Found!',
+                    text: 'You may proceed to select a candidate.',
                 }).then(() => {
                     $('#modal_verify').modal('hide');
                     $('#modal_vote').modal('show');
@@ -330,21 +328,20 @@
             } else if (data.status === "not_enough_data") {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Minimal Tiga Data Cocok',
+                    title: 'At Least Two Data Points Must Match',
                     text: data.message,
                 });
-            }
-            else if (data.status === "already_voted") {
+            } else if (data.status === "already_voted") {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Sudah Memilih!',
-                    text: 'Anda sudah memilih pada ' + data.voted_at,
+                    title: 'Already Voted!',
+                    text: 'You have already voted on ' + data.voted_at,
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Data Tidak Ditemukan!',
-                    text: 'Pastikan data yang anda masukkan benar.',
+                    title: 'Data Not Found!',
+                    text: 'Please ensure the data you entered is correct.',
                 });
             }
         })
@@ -364,22 +361,22 @@
         if (candidate_id === "") {
             Swal.fire({
                 icon: 'error',
-                title: 'Pilih Pasangan Calon!',
-                text: 'Anda harus memilih salah satu pasangan calon.',
+                title: 'Select a Candidate!',
+                text: 'You must select one of the candidates.',
             });
             return;
         }
 
         Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Pilihan Anda tidak dapat diubah!",
+            title: 'Are you sure?',
+            text: "Your choice cannot be changed!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Ya, Pilih!',
-            cancelButtonText: 'Batal'
+            confirmButtonText: 'Yes, Vote!',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Kirim data voting ke server
+                // Send voting data to the server
                 fetch("{{ route('voter.vote') }}", {
                     method: "POST",
                     headers: {
@@ -395,16 +392,16 @@
                     if (data.status === "success") {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Voting Berhasil!',
-                            text: 'Terima kasih atas partisipasi Anda.',
+                            title: 'Voting Successful!',
+                            text: 'Thank you for your participation.',
                         }).then(() => {
-                            window.location.href = "{{ route('home') }}"; // Redirect ke halaman default
+                            window.location.href = "{{ route('home') }}"; // Redirect to the default page
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Voting Gagal!',
-                            text: 'Terjadi kesalahan, silakan coba lagi.',
+                            title: 'Voting Failed!',
+                            text: 'An error occurred, please try again.',
                         });
                     }
                 })
