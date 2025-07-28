@@ -149,7 +149,7 @@
                             <!--begin::Modal body-->
                             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                 <!--begin::Form-->
-                                <form id="kt_modal_export_users_form" class="form" action="{{ route('voters.import') }}" method="POST" enctype="multipart/form-data">
+                                <form id="kt_modal_export_users_form" class="form" action="/voters/import" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-10">
@@ -507,7 +507,7 @@
                 button.innerHTML = "Loading..."; // Change button text to Loading
 
                 // Kirim request untuk menghapus data
-                fetch("{{ route('voters.deleteAll') }}", {
+                fetch("/voters/delete-all", {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
