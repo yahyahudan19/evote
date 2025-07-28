@@ -301,7 +301,7 @@
         verifyButton.setAttribute("data-kt-indicator", "on");
 
         // Send AJAX request to verify voter
-        fetch("{{ route('voter.verify') }}", {
+        fetch("/verify-voter", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -377,7 +377,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 // Send voting data to the server
-                fetch("{{ route('voter.vote') }}", {
+                fetch("/submit-vote", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -395,7 +395,7 @@
                             title: 'Voting Successful!',
                             text: 'Thank you for your participation.',
                         }).then(() => {
-                            window.location.href = "{{ route('home') }}"; // Redirect to the default page
+                            window.location.href = "/"; // Redirect to the root page
                         });
                     } else {
                         Swal.fire({
