@@ -311,7 +311,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "{{ route('email.clearEmailSent') }}",
+                    url: "/email/clear-email-sent",
                     type: "POST",
                     data: {
                         _token: "{{ csrf_token() }}"
@@ -405,7 +405,7 @@
         let table = $('#job-queue-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('jobs.datatables') }}",
+            ajax: "/jobs/datatables",
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'queue', name: 'queue' },
@@ -424,7 +424,7 @@
         setInterval(function() {
             table.ajax.reload(null, false); // false supaya tidak reset pagination
             // Update count juga
-            fetch("{{ route('jobs.count') }}")
+            fetch("/jobs/count")
                 .then(r => r.text())
                 .then(count => document.getElementById('job-queue-count').textContent = count);
         }, 5000);
@@ -434,7 +434,7 @@
 <script>
     let totalJobs = {{ $jobQueueCount }};
         function updateProgress() {
-            fetch("{{ route('jobs.count') }}")
+            fetch("/jobs/count")
                 .then(r => r.text())
                 .then(count => {
                     let remaining = parseInt(count);

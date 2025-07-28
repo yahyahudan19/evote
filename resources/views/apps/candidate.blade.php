@@ -696,7 +696,7 @@
 
                 // Kirim request untuk menghapus data
                 // fetch("{{ route('candidates.deleteAll') }}", {
-                fetch("/candidates/deleteAll", {
+                fetch("/candidates/delete-all", {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
