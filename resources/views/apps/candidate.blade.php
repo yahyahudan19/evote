@@ -695,7 +695,8 @@
                 button.innerHTML = "Loading..."; // Change button text to Loading
 
                 // Kirim request untuk menghapus data
-                fetch("{{ route('candidates.deleteAll') }}", {
+                // fetch("{{ route('candidates.deleteAll') }}", {
+                fetch("/candidates/deleteAll", {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
