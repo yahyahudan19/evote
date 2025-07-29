@@ -44,7 +44,6 @@ class Login extends Component
         Session::regenerate();
 
         $this->redirect(route('dashboard', absolute: false));
-        $this->emit('$refresh');
     }
 
     /**
