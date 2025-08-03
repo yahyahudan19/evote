@@ -117,18 +117,14 @@ class VoterController extends Controller
             $voter->update(['status' => 'voted']);
 
             // Kirim pesan WA setelah vote
-            $message = "Dear {$voter->name},\n\n" .
-                "Greetings,\n\n" .
-                "We sincerely thank you for participating in the ILUNI FKM UI 2025–2028 election. Your involvement reflects a strong commitment to upholding democracy and the integrity of our organization.\n\n" .
-                "Below are the details of your participation in the voting process:\n\n" .
-                "• Full Name   : {$voter->name}\n" .
-                "• Active Email: {$voter->email}\n" .
-                "• Contact No. : {$voter->phone}\n\n" .
-                "Your contribution is highly valued in fostering a harmonious, democratic, and integrity-driven ILUNI FKM UI. We hope this step will lead to meaningful progress for our collective future.\n\n" .
-                "Kind regards,\n\n" .
-                "The Committee of ILUNI FKM UI 2025–2028 Election and General Assembly\n\n" .
-                "📧 Email: xx@gmail.com\n" .
-                "📱 WhatsApp: wa.me/xxx";
+            $message = "Kepada {$voter->name},\n\n" .
+                "Salam sejahtera,\n\n" .
+                "Kami mengucapkan terima kasih yang sebesar-besarnya atas partisipasi Anda dalam Pemilihan Ketua Umum IKAMARS FKM UI. Keterlibatan Anda mencerminkan komitmen yang kuat dalam menjunjung tinggi nilai-nilai demokrasi dan integritas organisasi kita bersama.\n\n" .
+                "Kontribusi Anda sangat berarti dalam membangun IKAMARS FKM UI yang harmonis, demokratis, dan berintegritas. Kami berharap langkah ini membawa kemajuan berarti bagi masa depan kita bersama.\n\n" .
+                "Catatan: Pesan ini dikirim secara otomatis oleh sistem. Mohon untuk tidak membalas pesan ini.\n\n" .
+                "Hormat kami,\n\n" .
+                "Panitia Pemilihan dan Musyawarah Besar IKAMARS FKM UI\n\n" .
+                "📧 Email: ikamars.fkmui@gmail.com";
 
             // $message = "Yth. {$voter->name},\n\n" .
             //     "Salam sehat dan harmonis,\n\n" .
@@ -160,34 +156,31 @@ class VoterController extends Controller
         ]);
 
         $import = new VotersImport;
-        Excel::import($import, $request->file('excel_file'));
+        \Maatwebsite\Excel\Facades\Excel::import($import, $request->file('excel_file'));
 
         $imported = $import->getImportedCount();
         $skipped  = $import->getSkippedCount();
 
         if ($imported > 0 && $skipped > 0) {
-            Session::flash('swal', [
-                'type' => 'warning',
-                'title' => 'Import Selesai Sebagian!',
-                'text' => "$imported data diimport. $skipped baris dilewati karena duplikat.",
+            return response()->json([
+                'status' => 'warning',
+                'title'  => 'Import Selesai Sebagian!',
+                'message'=> "$imported data diimport. $skipped baris dilewati karena duplikat.",
             ]);
         } elseif ($imported > 0) {
-            Session::flash('swal', [
-                'type' => 'success',
-                'title' => 'Import Berhasil!',
-                'text' => "$imported data voters berhasil diimport.",
+            return response()->json([
+                'status' => 'success',
+                'title'  => 'Import Berhasil!',
+                'message'=> "$imported data voters berhasil diimport.",
             ]);
         } else {
-            Session::flash('swal', [
-                'type' => 'error',
-                'title' => 'Gagal Mengimpor!',
-                'text' => 'Tidak ada data baru yang diimpor.',
+            return response()->json([
+                'status' => 'error',
+                'title'  => 'Gagal Mengimpor!',
+                'message'=> 'Tidak ada data baru yang diimpor.',
             ]);
         }
-
-        return redirect()->back();
     }
-
     public function export(Request $request)
     {
         // Validasi input status pemilih

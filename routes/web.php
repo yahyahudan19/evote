@@ -18,6 +18,9 @@ use App\Models\Voter;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+Route::get('/test', function () {
+    return view('test');
+})->name('test');
 
 Route::get('/voters', [VoterController::class, 'index'])->name('voters.index');
 Route::post('/verify-voter', [VoterController::class, 'verify'])->name('voter.verify');

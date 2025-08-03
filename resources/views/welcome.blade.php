@@ -4,7 +4,7 @@
 	<!--begin::Head-->
 	<head>
 <base href="../../" />
-		<title>Welcome E-Voting v1.0</title>
+		<title>Welcome E-Voting v1.5</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="E-Vote is a modern and secure voting application designed to simplify the voting process with advanced features and user-friendly interfaces." />
 		<meta name="keywords" content="e-vote, voting application, secure voting, online voting, election software, digital voting, voting system, e-voting platform" />
@@ -12,7 +12,7 @@
 		<meta property="og:locale" content="id_ID" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="E-Vote - Simplifying the Voting Process" />
-		<meta property="og:url" content="https://e-vote.edycorp.id" />
+		<meta property="og:url" content="https://evote.edysoft.web.id/" />
 		<meta property="og:site_name" content="E-Vote by Edy Corporation" />
 		<link rel="shortcut icon" href="{{ asset('templates/assets/media/logos/favicon.ico')}}" />
 		<!--begin::Fonts(mandatory for all pages)-->
@@ -79,8 +79,8 @@
 							<!--end::Text-->
 							<!--begin::Illustration-->
 							<div class="mb-0">
-								<img src="{{ asset('templates/assets/media/auth/welcome.png')}}" class="mw-100 mh-300px theme-light-show" alt="" />
-								<img src="{{ asset('templates/assets/media/auth/welcome-dark.png')}}" class="mw-100 mh-300px theme-dark-show" alt="" />
+								<img src="{{ asset('templates/assets/media/auth/ok.png')}}" class="mw-100 mh-300px theme-light-show" alt="" />
+								<img src="{{ asset('templates/assets/media/auth/ok-dark.png')}}" class="mw-100 mh-300px theme-dark-show" alt="" />
 							</div>
 							<!--end::Illustration-->
 							<!--begin::Link-->

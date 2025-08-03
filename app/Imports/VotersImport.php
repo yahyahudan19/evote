@@ -30,13 +30,17 @@ class VotersImport implements ToCollection, WithHeadingRow
                 'name'       => $row['name'],
                 'email'      => $row['email'],
                 'phone'      => $row['phone'],
-                'code'      => $row['code'],
-                'vote_start_time'      => $row['vote_start_time'],
-                'vote_end_time'      => $row['vote_end_time'],
+                'code'       => $row['code'],
+                'vote_start_time' => is_numeric($row['vote_start_time'])
+                    ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['vote_start_time'])
+                    : \Carbon\Carbon::parse($row['vote_start_time']),
+                'vote_end_time' => is_numeric($row['vote_end_time'])
+                    ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['vote_end_time'])
+                    : \Carbon\Carbon::parse($row['vote_end_time']),
                 'id_card_number'=> $row['id_card_number'],
                 'birth_date' => is_numeric($row['birth_date'])
-                                ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['birth_date'])
-                                : Carbon::parse($row['birth_date']),
+                    ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['birth_date'])
+                    : \Carbon\Carbon::parse($row['birth_date']),
                 'status'     => 'not_voted',
             ]);
 

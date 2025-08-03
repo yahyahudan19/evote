@@ -24,20 +24,21 @@ class CandidatesController extends Controller
         // Validasi input
         $request->validate([
             'ketua_name'    => 'required|string|max:255',
-            'wakil_name'    => 'required|string|max:255',
+            // 'wakil_name'    => 'required|string|max:255',
             'description'   => 'nullable|string|max:500',
             'ketua_avatar'  => 'required|image|mimes:jpeg,png,jpg',
-            'wakil_avatar'  => 'required|image|mimes:jpeg,png,jpg',
+            // 'wakil_avatar'  => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
         // Cek duplikat paslon
         $exists = Candidate::where('ketua_name', $request->ketua_name)
-                    ->where('wakil_name', $request->wakil_name)
+                    // ->where('wakil_name', $request->wakil_name)
                     ->exists();
 
         if ($exists) {
             return redirect()->back()->withErrors([
-                'ketua_name' => 'Paslon dengan nama ketua & wakil ini sudah ada.',
+                // 'ketua_name' => 'Paslon dengan nama ketua & wakil ini sudah ada.',
+                'ketua_name' => 'Calon ini sudah ada.',
             ])->withInput();
         }
 
@@ -62,27 +63,32 @@ class CandidatesController extends Controller
         $ketuaPath = $ketuaFile->storeAs($ketuaDir, $ketuaFileName, 'public');
 
         if (!$ketuaPath || !Storage::disk('public')->exists($ketuaPath)) {
-            return redirect()->back()->withErrors(['ketua_avatar' => 'Upload foto ketua gagal.'])->withInput();
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'Upload foto ketua gagal.'
+            ]);
         }
 
         // Upload gambar wakil
-        $wakilFile = $request->file('wakil_avatar');
-        $wakilFileName = Str::slug($request->wakil_name) . '_candidates-' . $nextNumber . '.' . $wakilFile->getClientOriginalExtension();
-        $wakilPath = $wakilFile->storeAs($wakilDir, $wakilFileName, 'public');
+        // $wakilFile = $request->file('wakil_avatar');
+        // // $wakilFileName = Str::slug($request->wakil_name) . '_candidates-' . $nextNumber . '.' . $wakilFile->getClientOriginalExtension();
+        // // $wakilPath = $wakilFile->storeAs($wakilDir, $wakilFileName, 'public');
+        // $wakilPath = $wakilFile->storeAs($wakilDir,'public');
 
-        if (!$wakilPath || !Storage::disk('public')->exists($wakilPath)) {
-            return redirect()->back()->withErrors(['wakil_avatar' => 'Upload foto wakil gagal.'])->withInput();
-        }
+        // if (!$wakilPath || !Storage::disk('public')->exists($wakilPath)) {
+        //     return redirect()->back()->withErrors(['wakil_avatar' => 'Upload foto wakil gagal.'])->withInput();
+        // }
 
         // Simpan ke database
         Candidate::create([
             'candidate_number'   => $nextNumber,
             'ketua_name'         => $request->ketua_name,
-            'wakil_name'         => $request->wakil_name,
+            // 'wakil_name'         => $request->wakil_name,
             'description'        => $request->description,
             'ketua_image_path'   => $ketuaPath,
-            'wakil_image_path'   => $wakilPath,
+            // 'wakil_image_path'   => $wakilPath,
         ]);
+        
 
         return redirect()->back()->with('success', 'Paslon berhasil ditambahkan.');
     }

@@ -66,7 +66,7 @@
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                     <!--begin::Filter-->
-                    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                    {{-- <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                     <i class="ki-outline ki-filter fs-2"></i>Filter</button>
                     <!--begin::Menu 1-->
                     <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
@@ -110,7 +110,7 @@
                             <!--end::Actions-->
                         </div>
                         <!--end::Content-->
-                    </div>
+                    </div> --}}
                     <!--end::Menu 1-->
                     <!--begin::Delete All Voters-->
                     <button type="button" class="btn btn-danger me-3" id="delete_all_candidates_button">
@@ -165,7 +165,8 @@
                                                 <!--begin::Input group-->
                                                 <div class="fv-row">
                                                     <!--begin::Label-->
-                                                    <label class="d-block fw-semibold fs-6 mb-5">Ketua Image</label>
+                                                    <label class="d-block fw-semibold fs-6 mb-5">Calon Image</label>
+                                                    {{-- <label class="d-block fw-semibold fs-6 mb-5">Ketua Image</label> --}}
                                                     <!--end::Label-->
                                                     <!--begin::Image input-->
                                                     <div class="image-input image-input-outline image-input-placeholder" data-kt-image-input="true">
@@ -189,7 +190,7 @@
                                             </div>
                                             <!--end::Column-->
                                             <!--begin::Column-->
-                                            <div class="col-md-6">
+                                            {{-- <div class="col-md-6">
                                                 <!--begin::Input group-->
                                                 <div class="fv-row">
                                                     <!--begin::Label-->
@@ -214,14 +215,15 @@
                                                     <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
                                                 </div>
                                                 <!--end::Input group-->
-                                            </div>
+                                            </div> --}}
                                             <!--end::Column-->
                                         </div>
                                         <!--end::Row-->
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-7">
                                             <!--begin::Label-->
-                                            <label class="required fw-semibold fs-6 mb-2">Ketua Name</label>
+                                            {{-- <label class="required fw-semibold fs-6 mb-2">Ketua Name</label> --}}
+                                            <label class="required fw-semibold fs-6 mb-2">Calon Name</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <input type="text" name="ketua_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Edy Fakboy" value="Emma Smith" />
@@ -229,14 +231,14 @@
                                         </div>
                                         <!--end::Input group-->
                                         <!--begin::Input group-->
-                                        <div class="fv-row mb-7">
+                                        {{-- <div class="fv-row mb-7">
                                             <!--begin::Label-->
                                             <label class="required fw-semibold fs-6 mb-2">Wakil Name</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <input type="text" name="wakil_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Naufal" value="Naufal Gemoy" />
                                             <!--end::Input-->
-                                        </div>
+                                        </div> --}}
                                         <!--end::Input group-->
                                         <!--begin::Input group-->
                                         <div class="fv-row mb-7">
@@ -301,6 +303,7 @@
                                             <!--begin::Input group-->
                                             <div class="fv-row">
                                                 <!--begin::Label-->
+                                                <label class="d-block fw-semibold fs-6 mb-5">Calon Image</label>
                                                 <label class="d-block fw-semibold fs-6 mb-5">Ketua Image</label>
                                                 <!--end::Label-->
                                                 <!--begin::Image input-->
@@ -325,7 +328,7 @@
                                         </div>
                                         <!--end::Column-->
                                         <!--begin::Column-->
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <!--begin::Input group-->
                                             <div class="fv-row">
                                                 <!--begin::Label-->
@@ -350,19 +353,19 @@
                                                 <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
                                             </div>
                                             <!--end::Input group-->
-                                        </div>
+                                        </div> --}}
                                         <!--end::Column-->
                                     </div>
                                     <!--end::Row-->
                                     <div class="fv-row mb-7">
-                                        <label class="required fw-semibold fs-6 mb-2">Ketua Name</label>
+                                        <label class="required fw-semibold fs-6 mb-2">Calon Name</label>
                                         <input type="text" name="ketua_name" id="edit_ketua_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Edy Fakboy" />
                                     </div>
 
-                                    <div class="fv-row mb-7">
+                                    {{-- <div class="fv-row mb-7">
                                         <label class="required fw-semibold fs-6 mb-2">Wakil Name</label>
                                         <input type="text" name="wakil_name" id="edit_wakil_name" class="form-control form-control-solid mb-3 mb-lg-0" placeholder="Naufal" />
-                                    </div>
+                                    </div> --}}
 
                                     <div class="fv-row mb-7">
                                         <label class="required fw-semibold fs-6 mb-2">Description</label>
@@ -400,8 +403,9 @@
                                 <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_table_users .form-check-input" value="1" />
                             </div>
                         </th>
-                        <th class="min-w-125px">Ketua</th>
-                        <th class="min-w-125px">Wakil</th>
+                        {{-- <th class="min-w-125px">Ketua</th> --}}
+                        <th class="min-w-125px">Kandidat</th>
+                        {{-- <th class="min-w-125px">Wakil</th> --}}
                         <th class="min-w-125px">Description</th>
                         <th class="min-w-125px">Created At</th>
                         {{-- <th class="min-w-125px">Update At</th> --}}
@@ -429,16 +433,16 @@
                             <!--begin::User details-->
                             <div class="d-flex flex-column">
                                 <a href="#" class="text-gray-800 text-hover-primary mb-1">{{$cand->ketua_name}}</a>
-                                <span>Ketua</span>
+                                <span>Calon {{$cand->candidate_number}}</span>
                             </div>
                             <!--begin::User details-->
                         </td>
-                        <td>
-                            <div class="d-flex flex-column">
-                                <a href="#" class="text-gray-800 text-hover-primary mb-1">{{$cand->wakil_name}}</a>
-                                <span>Wakil</span>
-                            </div>
-                        </td>
+                            {{-- <td>
+                                <div class="d-flex flex-column">
+                                    <a href="#" class="text-gray-800 text-hover-primary mb-1">{{$cand->wakil_name}}</a>
+                                    <span>Wakil</span>
+                                </div>
+                            </td> --}}
                         <td>
                             <div class="badge badge-light fw-bold">{{$cand->description}}</div>
                         </td>
@@ -516,13 +520,13 @@
                                 }
                             }
                         },
-                        'wakil_name': {
-                            validators: {
-                                notEmpty: {
-                                    message: 'Wakil Name is required'
-                                }
-                            }
-                        },
+                        // 'wakil_name': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Wakil Name is required'
+                        //         }
+                        //     }
+                        // },
                     },
 
                     plugins: {
@@ -760,12 +764,12 @@
                 // Populate form fields
                 document.getElementById('candidate_id').value = candidate.id;
                 document.getElementById('edit_ketua_name').value = candidate.ketua_name;
-                document.getElementById('edit_wakil_name').value = candidate.wakil_name;
+                // document.getElementById('edit_wakil_name').value = candidate.wakil_name;
                 document.getElementById('edit_description').value = candidate.description;
                 
                 // Set image preview for ketua and wakil
                 document.getElementById('edit_ketua_image').style.backgroundImage = 'url(' + window.location.origin + '/storage/' + candidate.ketua_image_path + ')';
-                document.getElementById('edit_wakil_image').style.backgroundImage = 'url(' + window.location.origin + '/storage/' + candidate.wakil_image_path + ')';
+                // document.getElementById('edit_wakil_image').style.backgroundImage = 'url(' + window.location.origin + '/storage/' + candidate.wakil_image_path + ')';
 
                 // Show the modal
                 $('#kt_modal_edit_candidate').modal('show');

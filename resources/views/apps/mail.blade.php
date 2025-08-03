@@ -176,10 +176,11 @@
                                                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                                         <tr>
                                                             <td style="color: #64748b; font-size: 14px; line-height: 1.8;">
-                                                                <p style="margin: 0 0 8px 0;">1. Access the eVote platform through the provided link</p>
+                                                                <p style="margin: 0 0 8px 0;">1. Access the eVote platform through the provided link: <a href="https://evote.edysoft.web.id/" style="color: #3b82f6; text-decoration: none;">https://evote.edysoft.web.id/</a></p>
                                                                 <p style="margin: 0 0 8px 0;">2. Enter the verification code above</p>
                                                                 <p style="margin: 0 0 8px 0;">3. Verify your identity</p>
                                                                 <p style="margin: 0;">4. Cast your vote according to your preference</p>
+                                                                <p style="margin: 0;">5. urther information can be accessed via the following link</p>
                                                             </td>
                                                         </tr>
                                                     </table>

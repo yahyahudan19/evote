@@ -149,7 +149,7 @@
                             <!--begin::Modal body-->
                             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                 <!--begin::Form-->
-                                <form id="kt_modal_export_users_form" class="form" action="/voters/import" method="POST" enctype="multipart/form-data">
+                                <form id="importForm" class="form" enctype="multipart/form-data">
                                     @csrf
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-10">
@@ -166,11 +166,9 @@
                                     <!--end::Input group-->
                                     <!--begin::Actions-->
                                     <div class="text-center">
-                                        <button type="reset" class="btn btn-light me-3" data-bs-dismiss="modal" aria-label="Close">Discard</button>
-                                        <button type="submit" class="btn btn-primary" data-kt-users-modal-action="submit">
+                                        <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">Discard</button>
+                                        <button type="submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
-                                            <span class="indicator-progress">Please wait... 
-                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                         </button>
                                     </div>
                                     <!--end::Actions-->
@@ -178,6 +176,13 @@
                                 <!--end::Form-->
                             </div>
                             <!--end::Modal body-->
+                            <!-- Progress bar -->
+                            <div id="progress-container" class="mt-4" style="display:none;">
+                                <div class="progress">
+                                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                        role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
                         </div>
                         <!--end::Modal content-->
                     </div>
@@ -471,6 +476,59 @@
 <!--begin::Custom Javascript(used for this page only)-->
 <script src="{{ asset('templates/assets/js/custom/evote/votersjs/table.js')}}"></script>
 <script src="{{ asset('templates/assets/js/custom/evote/votersjs/add.js')}}"></script>
+
+<script>
+    document.getElementById('importForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        // Tampilkan progress bar
+        document.getElementById('progress-container').style.display = 'block';
+        const progressBar = document.getElementById('progress-bar');
+        progressBar.style.width = '30%';
+
+        fetch("{{ route('voters.import') }}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name=_token]').value
+            }
+        }).then(response => {
+            progressBar.style.width = '70%';
+            return response.json();
+        }).then(data => {
+            progressBar.style.width = '100%';
+
+            setTimeout(() => {
+                document.getElementById('progress-container').style.display = 'none';
+                progressBar.style.width = '0%';
+
+                Swal.fire({
+                    icon: data.status,
+                    title: data.title,
+                    text: data.message,
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    if (data.status === 'success') {
+                        window.location.reload(); // Reload page on success
+                    }
+                });
+
+            }, 500);
+
+        }).catch(error => {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                text: 'Gagal memproses file.'
+            });
+        });
+    });
+</script>
+
 
 <script>
     new tempusDominus.TempusDominus(document.getElementById("kt_td_picker_date_only"), {
