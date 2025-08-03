@@ -180,7 +180,7 @@
                                                                 <p style="margin: 0 0 8px 0;">2. Enter the verification code above</p>
                                                                 <p style="margin: 0 0 8px 0;">3. Verify your identity</p>
                                                                 <p style="margin: 0;">4. Cast your vote according to your preference</p>
-                                                                <p style="margin: 0;">5. urther information can be accessed via the following link</p>
+                                                                <p style="margin: 0;">5. Further information can be accessed via the following link</p>
                                                             </td>
                                                         </tr>
                                                     </table>
