@@ -202,7 +202,7 @@
                             </div>
                             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                 <!-- Form -->
-                                <form id="kt_modal_export_voters_form" class="form" action="{{ route('voters.export') }}" method="GET">
+                                <form id="kt_modal_export_voters_form" class="form" action="/voters/export" method="GET">
                                     <!-- Input group -->
                                     <div class="fv-row mb-10">
                                         <label class="fs-6 fw-semibold form-label mb-2">Pilih Status Pemilih:</label>
@@ -489,7 +489,7 @@
         const progressBar = document.getElementById('progress-bar');
         progressBar.style.width = '30%';
 
-        fetch("{{ route('voters.import') }}", {
+        fetch("/voters/import", {
             method: 'POST',
             body: formData,
             headers: {
