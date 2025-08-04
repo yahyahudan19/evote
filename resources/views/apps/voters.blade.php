@@ -1224,6 +1224,18 @@
             });
         });
 
+        // Step 4: Back to selection button
+        document.getElementById('kt_button_back').addEventListener('click', function () {
+            // Tutup modal konfirmasi
+            $('#modal_confirm').modal('hide');
+
+            // Setelah modal confirm ditutup, buka kembali modal select
+            $('#modal_confirm').one('hidden.bs.modal', function () {
+                $('#modal_select').modal('show');
+                initializeCandidateSelection(); // Pastikan pilihan kandidat masih aktif
+            });
+        });
+
         // Clear forms and reset states when modals are hidden
         $('#modal_verify').on('hidden.bs.modal', function () {
             document.querySelector("[name='phone']").value = '';
