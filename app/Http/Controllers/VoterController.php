@@ -119,12 +119,15 @@ class VoterController extends Controller
             // Kirim pesan WA setelah vote
             $message = "Kepada {$voter->name},\n\n" .
                 "Salam sejahtera,\n\n" .
-                "Kami mengucapkan terima kasih yang sebesar-besarnya atas partisipasi Anda dalam Pemilihan Ketua Umum IKAMARS FKM UI. Keterlibatan Anda mencerminkan komitmen yang kuat dalam menjunjung tinggi nilai-nilai demokrasi dan integritas organisasi kita bersama.\n\n" .
+                "🌟 Kami mengucapkan terima kasih yang sebesar-besarnya atas partisipasi Anda dalam Pemilihan Ketua Umum IKAMARS FKM UI Periode 2025-2028. 🙏\n\n" .
+                "Keterlibatan Anda mencerminkan komitmen yang kuat dalam menjunjung tinggi nilai-nilai demokrasi dan integritas organisasi kita bersama.\n\n" .
                 "Kontribusi Anda sangat berarti dalam membangun IKAMARS FKM UI yang harmonis, demokratis, dan berintegritas. Kami berharap langkah ini membawa kemajuan berarti bagi masa depan kita bersama.\n\n" .
-                "Catatan: Pesan ini dikirim secara otomatis oleh sistem. Mohon untuk tidak membalas pesan ini.\n\n" .
-                "Hormat kami,\n\n" .
-                "Panitia Pemilihan dan Musyawarah Besar IKAMARS FKM UI\n\n" .
-                "📧 Email: ikamars.fkmui@gmail.com";
+                "✨ Hormat kami,\n\n" .
+                "Panitia Munas VI IKAMARS FKM UI\n\n" .
+                "📧 Email: ikamars.fkmui@gmail.com\n" .
+                "📞 Narahubung:\n" .
+                "• Yuyun: +62 817-737-444\n" .
+                "• Safar: +62 811-8868-708";
 
             // $message = "Yth. {$voter->name},\n\n" .
             //     "Salam sehat dan harmonis,\n\n" .

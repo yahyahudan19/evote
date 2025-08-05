@@ -180,7 +180,7 @@
                                                                 <p style="margin: 0 0 8px 0;">2. Enter the verification code above</p>
                                                                 <p style="margin: 0 0 8px 0;">3. Verify your identity</p>
                                                                 <p style="margin: 0;">4. Cast your vote according to your preference</p>
-                                                                <p style="margin: 0;">5. Further information can be accessed via the following link</p>
+                                                                <p style="margin: 0;">5. Further information can be accessed via the following link: <a href="https://drive.google.com/drive/folders/1yOegwS7wDQcgp9Q3rvjtfWb80E5H045g?usp=sharing" style="color: #3b82f6; text-decoration: none;">Google Drive</a></p>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -198,7 +198,7 @@
                     <tr>
                         <td style="background-color: #f8fafc; padding: 24px 30px; text-align: center; border-top: 1px solid #e5e7eb; border-radius: 0 0 16px 16px;">
                             <p style="margin: 0 0 8px 0; color: #64748b; font-size: 14px; font-weight: 500;">Thank you for your participation in the digital democracy system</p>
-                            <p style="margin: 0 0 16px 0; color: #94a3b8; font-size: 13px; font-weight: bold;">eVote Team</p>
+                            <p style="margin: 0 0 16px 0; color: #94a3b8; font-size: 13px; font-weight: bold;">Electornic Voting System IKAMARS FKM UI</p>
                             <div style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
                                 <p style="margin: 0; font-size: 12px; color: #94a3b8;">&copy; {{ date('Y') }} eVote. All rights reserved.</p>
                             </div>

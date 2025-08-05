@@ -101,9 +101,12 @@
 
         .candidate-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 30px;
             margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .candidate-card {
@@ -585,6 +588,7 @@
             .candidate-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
+                max-width: none;
             }
             
             .candidate-photos {
@@ -625,7 +629,7 @@
     <div class="main-container">
         <!-- Header Section -->
         <div class="header-section" data-aos="fade-down">
-            <h1><i class="fas fa-vote-yea me-3"></i>Our Candidates</h1>
+            <h1><i class="fas fa-vote-yea me-3"></i>Calon Ketua Umum IKAMARS FKMUI Periode 2025-2028</h1>
             <p>Choose your preferred candidate below and make your voice heard in shaping the future!</p>
         </div>
 
