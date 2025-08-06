@@ -630,7 +630,13 @@
         <!-- Header Section -->
         <div class="header-section" data-aos="fade-down">
             <h1><i class="fas fa-vote-yea me-3"></i>Calon Ketua Umum IKAMARS FKMUI Periode 2025-2028</h1>
-            <p>Choose your preferred candidate below and make your voice heard in shaping the future!</p>
+            <p>Periode Pemilihan : <span class="fw-semibold text-white fs-6">{{ \Carbon\Carbon::parse($election->start_time)->translatedFormat('d F Y \P\u\k\u\l H:i') }}</span> - <span class="fw-semibold text-white fs-6">{{ \Carbon\Carbon::parse($election->end_time)->translatedFormat('d F Y \P\u\k\u\l H:i') }}</span></p>
+            <div class="d-flex justify-content-center align-items-center py-3">
+                <a href="#" class="btn btn-flex btn-icon align-items-center fw-bold h-auto py-2 px-4" id="time_remaining_button" style="border-radius: 8px; box-shadow: var(--shadow);">
+                    <i class="fas fa-clock fs-5 me-2"></i>
+                    <span class="fs-6" id="time_remaining">Time Remaining: </span>
+                </a>
+            </div>
         </div>
 
         <!-- Content Section -->
@@ -1338,6 +1344,60 @@
             }
         `;
         document.head.appendChild(style);
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Cek status pemilihan
+            const electionStatus = "{{ $election->status }}"; // 'Y' untuk aktif, 'N' untuk belum dimulai
+    
+            if (electionStatus === 'Y') {
+                // Ambil waktu selesai pemilihan yang dikirim dari controller
+                const endTime = new Date("{{ $election->end_time }}"); // Format: YYYY-MM-DD HH:MM:SS
+    
+                // Fungsi untuk memperbarui waktu yang tersisa
+                function updateCountdown() {
+                    const now = new Date();
+                    const timeLeft = endTime - now;
+    
+                    const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+    
+                    // Update text untuk waktu yang tersisa
+                    let timeText = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+    
+                    document.getElementById("time_remaining").innerText = `Time Remaining: ${timeText}`;
+    
+                    // Ganti warna button berdasarkan waktu yang tersisa
+                    const button = document.getElementById("time_remaining_button");
+    
+                    if (timeLeft <= 0) {
+                        button.classList.remove("btn-success", "btn-warning", "btn-danger");
+                        button.classList.add("btn-danger");
+                        document.getElementById("time_remaining").innerText = "Pemilihan Selesai";
+                    } else if (daysLeft > 1) {
+                        button.classList.remove("btn-warning", "btn-danger");
+                        button.classList.add("btn-success");
+                    } else if (hoursLeft >= 1) {
+                        button.classList.remove("btn-success", "btn-danger");
+                        button.classList.add("btn-warning");
+                    } else {
+                        button.classList.remove("btn-success", "btn-warning");
+                        button.classList.add("btn-danger");
+                    }
+                }
+    
+                // Memperbarui waktu setiap detik
+                setInterval(updateCountdown, 1000);
+            } else {
+                // Jika status pemilihan adalah 'N'
+                document.getElementById("time_remaining").innerText = "Election Not Started";
+                const button = document.getElementById("time_remaining_button");
+                button.classList.remove("btn-success", "btn-warning", "btn-danger");
+                button.classList.add("btn-secondary");
+            }
+        });
     </script>
 </body>
 </html>
