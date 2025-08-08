@@ -33,7 +33,7 @@
                                             <span style="color: #ffffff; font-size: 24px; font-weight: bold;">eV</span>
                                         </div>
                                         <h1 style="margin: 0 0 8px 0; font-size: 28px; color: #ffffff; font-weight: bold; letter-spacing: -0.5px;">Your eVote Access Code</h1>
-                                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 16px;">Electornic Voting System IKAMARS FKM UI</p>
+                                        <p style="margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 16px;">Electronic Voting System IKAMARS FKM UI</p>
                                     </td>
                                 </tr>
                             </table>
