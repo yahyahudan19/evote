@@ -57,7 +57,7 @@ class VoterWhatsappController extends Controller
 
             // antrikan ke queue
             SendWhatsappReminder::dispatch($voter, $message)
-                ->delay(now()->addSeconds($index * 5));
+                ->delay(now()->addSeconds($index * 10));
             
         }
 
